@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1076642674610-ijkpj8u8qn7gdfog75t5ihtgusits27v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1076642674610-ijkpj8u8qn7gdfog75t5ihtgusits27v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDuXOeqCYG-u9teqCes0hQLVkv-GeA8Vnw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1076642674610</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.sabawa</string>
+	<key>PROJECT_ID</key>
+	<string>sabawa-9c7d2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sabawa-9c7d2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1076642674610:ios:c43a395bfb7f20329a16ab</string>
+	<key>DATABASE_URL</key>
+	<string>https://sabawa-9c7d2.firebaseio.com</string>
+</dict>
+</plist>
