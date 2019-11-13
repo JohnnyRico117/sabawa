@@ -7,7 +7,7 @@ ThemeData buildTheme() {
       headline: base.headline.copyWith(
         fontFamily: 'Merriweather',
         fontSize: 40.0,
-        color: const Color(0x9680006B),
+        color: const Color(0xFF2D91EB),
       ),
       title: base.title.copyWith(
         fontFamily: 'Merriweather',
@@ -26,8 +26,9 @@ ThemeData buildTheme() {
     textTheme: _buildTextTheme(base.textTheme),
     primaryColor: const Color(0xFF2D91EB),
     indicatorColor: const Color(0xFF807A6B),
-    scaffoldBackgroundColor: const Color(0xFF2D91EB),
-    accentColor: const Color(0x9680006B),
+    //scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+    scaffoldBackgroundColor: const Color(0xFFFFFFFF),
+    accentColor: const Color(0xFF2D91EB),
     iconTheme: IconThemeData(
       color: const Color(0xFFCCC5AF),
       size: 20.0,

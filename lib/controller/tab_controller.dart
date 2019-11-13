@@ -8,12 +8,12 @@ import 'package:sabawa/model/state.dart';
 import 'package:sabawa/ui/screens/todo_list.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
-class TabController extends StatefulWidget {
+class SabawaTabController extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new TabControllerState();
+  State<StatefulWidget> createState() => new SabawaTabControllerState();
 }
 
-class TabControllerState extends State<TabController> {
+class SabawaTabControllerState extends State<SabawaTabController> {
 
   StateModel appState;
 

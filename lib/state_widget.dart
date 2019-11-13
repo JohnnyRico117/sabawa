@@ -34,7 +34,8 @@ class _StateWidgetState extends State<StateWidget> {
     if (widget.state != null) {
       state = widget.state;
     } else {
-      state = new StateModel(isLoading: true);
+      //state = new StateModel(isLoading: true);
+      state = new StateModel(isLoading: false);
     }
   }
 
