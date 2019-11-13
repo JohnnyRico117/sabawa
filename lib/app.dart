@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:sabawa/ui/theme.dart';
-//import 'package:sabawa/ui/screens/home.dart';
+import 'package:sabawa/controller/tab_controller.dart';
 
 class SabawaApp extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class SabawaApp extends StatelessWidget {
       title: 'Sabawa',
       theme: buildTheme(),
       routes: {
-        //'/': (context) => HomeScreen(),
+        '/': (context) => SabawaTabController(),
       },
     );
   }
