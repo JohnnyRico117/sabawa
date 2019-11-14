@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:sabawa/ui/theme.dart';
+import 'package:sabawa/ui/screens/login.dart';
 import 'package:sabawa/controller/tab_controller.dart';
 
 class SabawaApp extends StatelessWidget {
@@ -12,6 +13,7 @@ class SabawaApp extends StatelessWidget {
       theme: buildTheme(),
       routes: {
         '/': (context) => SabawaTabController(),
+        '/login': (context) => LoginScreen(),
       },
     );
   }

@@ -6,6 +6,8 @@ import 'package:sabawa/state_widget.dart';
 import 'package:sabawa/model/state.dart';
 
 import 'package:sabawa/ui/screens/todo_list.dart';
+import 'package:sabawa/ui/screens/login.dart';
+import 'package:sabawa/ui/screens/settings.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
 class SabawaTabController extends StatefulWidget {
@@ -33,6 +35,10 @@ class SabawaTabControllerState extends State<SabawaTabController> {
       return _buildTabView(
         body: LoadingIndicator(),
       );
+    } else if (!appState.isLoading && appState.user == null) {
+      return new LoginScreen();
+//    } else if (appState.newuser == true) {
+//      return new ProfileSetUp();
     } else {
       return _buildTabView(
         body: _buildTabsContent(),
@@ -77,7 +83,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
         ToDoList(),
         Center(child: Icon(Icons.lightbulb_outline)),
         Center(child: Icon(Icons.lightbulb_outline)),
-        Center(child: Icon(Icons.settings)),
+        Settings()
       ],
     );
   }
