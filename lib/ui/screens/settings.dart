@@ -32,6 +32,9 @@ class _SettingsState extends State<Settings> {
 
   Widget _settingContent() {
     return Scaffold (
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

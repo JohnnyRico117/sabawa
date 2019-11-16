@@ -98,7 +98,6 @@ class _StateWidgetState extends State<StateWidget> {
       setState(() {
         state.isLoading = false;
         state.currentUser = theUser;
-
       });
     }
   }

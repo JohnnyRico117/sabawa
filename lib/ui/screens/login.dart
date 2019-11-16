@@ -35,7 +35,10 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 50.0),
               // Passing function callback as constructor argument:
               GoogleSignInButton(
-                onPressed: () => StateWidget.of(context).signInWithGoogle(),
+                onPressed: () {
+                  StateWidget.of(context).signInWithGoogle();
+                  Navigator.pushNamed(context, '/');
+                }
               ),// New code
             ],
           ),

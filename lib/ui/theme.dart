@@ -23,8 +23,22 @@ ThemeData buildTheme() {
   final ThemeData base = ThemeData.light();
 
   return base.copyWith(
+    appBarTheme: AppBarTheme(
+      color: Colors.white,
+      textTheme: TextTheme(
+        title: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+        )
+      ),
+      actionsIconTheme: IconThemeData(
+        color: Colors.black38
+      )
+    ),
     textTheme: _buildTextTheme(base.textTheme),
-    primaryColor: const Color(0xFF2D91EB),
+    //primaryColor: const Color(0xFF2D91EB),
+    primaryColor: Colors.white,
     indicatorColor: const Color(0xFF807A6B),
     //scaffoldBackgroundColor: const Color(0xFFF5F5F5),
     scaffoldBackgroundColor: const Color(0xFFFFFFFF),
@@ -33,6 +47,5 @@ ThemeData buildTheme() {
       color: const Color(0xFFCCC5AF),
       size: 20.0,
     ),
-    buttonColor: Colors.white,
   );
 }
