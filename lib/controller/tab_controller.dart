@@ -6,7 +6,7 @@ import 'package:sabawa/model/state.dart';
 
 import 'package:sabawa/ui/screens/todo_list.dart';
 import 'package:sabawa/ui/screens/login.dart';
-import 'package:sabawa/ui/screens/profile.dart';
+import 'package:sabawa/ui/screens/progress.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
 class SabawaTabController extends StatefulWidget {
@@ -20,7 +20,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetOptions = <Widget>[
-    Profile(),
+    Progress(),
     ToDoList(),
     Center(child: Icon(Icons.lightbulb_outline)),
     Center(child: Icon(Icons.lightbulb_outline)),
@@ -92,7 +92,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => print("TEST"),
+          onTap: () => Navigator.pushNamed(context, '/profile'),
           child: Container(
             padding: EdgeInsets.all(8.0),
             child: CircleAvatar(
@@ -100,7 +100,10 @@ class SabawaTabControllerState extends State<SabawaTabController> {
             ),
           )
         ),
-        title: const Text('Sabawa'),
+        title: GestureDetector(
+          child: Text("SABAWA"),
+          onTap: () => print("Sabawa"),
+        ),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.settings), 
@@ -119,16 +122,19 @@ class SabawaTabControllerState extends State<SabawaTabController> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.list),
             title: Text('To-Do'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb_outline),
-            title: Text('???'),
+            backgroundColor: Colors.blue,
+            icon: Icon(Icons.people),
+            title: Text('Friends'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.lightbulb_outline),
-            title: Text('???'),
+            backgroundColor: Colors.blue,
+            icon: Icon(Icons.folder),
+            title: Text('Projects'),
           ),
         ],
         currentIndex: _selectedIndex,
@@ -142,7 +148,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   TabBarView _buildTabsContent() {
     return TabBarView(
       children: [
-        Profile(),
+        Progress(),
         ToDoList(),
         Center(child: Icon(Icons.lightbulb_outline)),
         Center(child: Icon(Icons.lightbulb_outline)),

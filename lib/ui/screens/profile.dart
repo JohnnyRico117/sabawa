@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:percent_indicator/circular_percent_indicator.dart';
-
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/state_widget.dart';
 
@@ -18,22 +16,29 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
 
-    return new Container(
-      padding: const EdgeInsets.all(12),
-      child: new Column(
-        children: <Widget>[
-          _buildPoints(),
-          _buildPoints(),
-          _buildPoints()
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appState.user.displayName),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            _buildAvatar(),
+            _buildUserInfo(),
+            //_buildCards("Projects", Icons.folder, '/projects'),
+          ],
+        ),
       )
     );
   }
 
   Widget _buildAvatar() {
-    return new CircleAvatar(
-      backgroundImage: appState.user.photoUrl == null ? null : new NetworkImage(appState.user.photoUrl),
-      radius: 50.0,
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: CircleAvatar(
+        backgroundImage: new NetworkImage(appState.user.photoUrl),
+        radius: 50.0,
+      ),
     );
   }
 
@@ -49,7 +54,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                         padding: const EdgeInsets.only(bottom: 18),
                         child: Text(
-                            appState.user.displayName == null ? "" : appState.user.displayName,
+                            appState.user.displayName.split(" ").first,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0
@@ -64,8 +69,13 @@ class _ProfileState extends State<Profile> {
                           Icon(Icons.star, color: Colors.yellow),
                           Container(
                               padding: const EdgeInsets.only(left: 8),
-                              //child: Text(appState.points.toString())
-                              child: Text(appState.currentUser.points == null ? "" : appState.currentUser.points.toString())
+                              child: Text(
+                                appState.currentUser.points.toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0
+                                ),
+                              )
                           )
                         ],
                       ),
@@ -82,14 +92,12 @@ class _ProfileState extends State<Profile> {
     Card _buildCard() {
       return Card(
         elevation: 5.0,
-        margin: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         child: Container(
           decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
           child: ListTile(
               contentPadding: EdgeInsets.symmetric(
                   horizontal: 20.0, vertical: 0.1),
               leading: Icon(icon, color: Colors.white),
-
               title: Text(
                 title,
                 style: TextStyle(
@@ -104,45 +112,19 @@ class _ProfileState extends State<Profile> {
 
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, route),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.0),
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildCard(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPoints() {
-    return Row(
-      children: <Widget>[
-        CircularPercentIndicator(
-          progressColor: Colors.green,
-          radius: 90.0,
-          percent: 0.4,
-          lineWidth: 10.0,
-          center: Text("40%",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0
-            ),
-          ),
-        ),
-        Column(
-          children: <Widget>[
-            Text("Tasks: 20"),
-            Text("Already done: 2"),
-            Text("Points: 2000")
-          ],
-        )
-
-      ]
+      child: _buildCard()
+//      child: Padding(
+//        padding: EdgeInsets.symmetric(horizontal: 3.0),
+//        child: Card(
+//          child: Column(
+//            mainAxisSize: MainAxisSize.min,
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              _buildCard(),
+//            ],
+//          ),
+//        ),
+//      ),
     );
   }
 

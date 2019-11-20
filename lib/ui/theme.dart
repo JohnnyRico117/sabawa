@@ -34,6 +34,9 @@ ThemeData buildTheme() {
       ),
       actionsIconTheme: IconThemeData(
         color: Colors.black38
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.black38
       )
     ),
     textTheme: _buildTextTheme(base.textTheme),
