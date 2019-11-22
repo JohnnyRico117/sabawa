@@ -90,6 +90,7 @@ class _StateWidgetState extends State<StateWidget> {
           'username': firebaseUser.displayName,
           'userpic': firebaseUser.photoUrl,
           'points': 0,
+          'friends': new List<String>(),
         });
       }
 

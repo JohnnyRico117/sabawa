@@ -7,6 +7,7 @@ import 'package:sabawa/model/state.dart';
 import 'package:sabawa/ui/screens/todo_list.dart';
 import 'package:sabawa/ui/screens/login.dart';
 import 'package:sabawa/ui/screens/progress.dart';
+import 'package:sabawa/ui/screens/friend_list.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
 class SabawaTabController extends StatefulWidget {
@@ -22,6 +23,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   List<Widget> _widgetOptions = <Widget>[
     Progress(),
     ToDoList(),
+    FriendList(),
     Center(child: Icon(Icons.lightbulb_outline)),
     Center(child: Icon(Icons.lightbulb_outline)),
   ];
@@ -58,35 +60,35 @@ class SabawaTabControllerState extends State<SabawaTabController> {
     }
   }
 
-  DefaultTabController _buildTabView({Widget body}) {
-    const double _iconSize = 20.0;
-
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
-          child: AppBar(
-            elevation: 2.0,
-            bottom: TabBar(
-              labelColor: Theme.of(context).indicatorColor,
-              tabs: [
-                Tab(icon: Icon(Icons.person, size: _iconSize)),
-                Tab(icon: Icon(Icons.list, size: _iconSize)),
-                Tab(icon: Icon(Icons.lightbulb_outline, size: _iconSize)),
-                Tab(icon: Icon(Icons.lightbulb_outline, size: _iconSize)),
-                //Tab(icon: Icon(Icons.settings, size: _iconSize))
-              ],
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: body,
-        ),
-      ),
-    );
-  }
+//  DefaultTabController _buildTabView({Widget body}) {
+//    const double _iconSize = 20.0;
+//
+//    return DefaultTabController(
+//      length: 4,
+//      child: Scaffold(
+//        appBar: PreferredSize(
+//          preferredSize: Size.fromHeight(50.0),
+//          child: AppBar(
+//            elevation: 2.0,
+//            bottom: TabBar(
+//              labelColor: Theme.of(context).indicatorColor,
+//              tabs: [
+//                Tab(icon: Icon(Icons.person, size: _iconSize)),
+//                Tab(icon: Icon(Icons.list, size: _iconSize)),
+//                Tab(icon: Icon(Icons.lightbulb_outline, size: _iconSize)),
+//                Tab(icon: Icon(Icons.lightbulb_outline, size: _iconSize)),
+//                //Tab(icon: Icon(Icons.settings, size: _iconSize))
+//              ],
+//            ),
+//          ),
+//        ),
+//        body: Padding(
+//          padding: EdgeInsets.all(5.0),
+//          child: body,
+//        ),
+//      ),
+//    );
+//  }
 
   Widget _buildBottomTabs() {
     return Scaffold(
@@ -115,6 +117,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             backgroundColor: Colors.blue,
@@ -136,6 +139,11 @@ class SabawaTabControllerState extends State<SabawaTabController> {
             icon: Icon(Icons.folder),
             title: Text('Projects'),
           ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
+            icon: Icon(Icons.chat),
+            title: Text('Chat'),
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
@@ -145,15 +153,15 @@ class SabawaTabControllerState extends State<SabawaTabController> {
     );
   }
 
-  TabBarView _buildTabsContent() {
-    return TabBarView(
-      children: [
-        Progress(),
-        ToDoList(),
-        Center(child: Icon(Icons.lightbulb_outline)),
-        Center(child: Icon(Icons.lightbulb_outline)),
-        //Settings()
-      ],
-    );
-  }
+//  TabBarView _buildTabsContent() {
+//    return TabBarView(
+//      children: [
+//        Progress(),
+//        ToDoList(),
+//        Center(child: Icon(Icons.lightbulb_outline)),
+//        Center(child: Icon(Icons.lightbulb_outline)),
+//        //Settings()
+//      ],
+//    );
+//  }
 }

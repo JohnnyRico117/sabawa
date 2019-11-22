@@ -41,7 +41,7 @@ ThemeData buildTheme() {
     ),
     textTheme: _buildTextTheme(base.textTheme),
     //primaryColor: const Color(0xFF2D91EB),
-    primaryColor: Colors.white,
+    primaryColor: Color(0xFF2D91EB),
     indicatorColor: const Color(0xFF807A6B),
     //scaffoldBackgroundColor: const Color(0xFFF5F5F5),
     scaffoldBackgroundColor: const Color(0xFFFFFFFF),

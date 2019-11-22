@@ -80,6 +80,25 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.people, color: Colors.blue),
+                          Container(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                appState.currentUser.friends.length.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0
+                                ),
+                              )
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 )
             )
