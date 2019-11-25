@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/model/user.dart';
@@ -45,6 +46,7 @@ class _StateWidgetState extends State<StateWidget> {
     } else {
       state = new StateModel(isLoading: true);
       initUser();
+      initProject();
     }
   }
 
@@ -57,6 +59,28 @@ class _StateWidgetState extends State<StateWidget> {
       });
     } else {
       await signInWithGoogle();
+    }
+  }
+
+  void initProject() async {
+    final prefs = await SharedPreferences.getInstance();
+    final projectID = prefs.getString('projectID') ?? "";
+
+    print("ProjectID: " + projectID);
+
+    if(projectID == null) {
+      // TODO: Change Route to select a project oooor look if the user has only one and take that one
+    } else {
+      DocumentSnapshot querySnapshot = await Firestore.instance
+          .collection('projects')
+          .document(projectID)
+          .get();
+      if (querySnapshot.exists) {
+        setState(() {
+          state.currentProjectID = projectID;
+          state.currentProjectName = querySnapshot['name'];
+        });
+      }
     }
   }
 
@@ -91,6 +115,7 @@ class _StateWidgetState extends State<StateWidget> {
           'userpic': firebaseUser.photoUrl,
           'points': 0,
           'friends': new List<String>(),
+          'projects': new List<String>(),
         });
       }
 

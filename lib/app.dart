@@ -4,6 +4,7 @@ import 'package:sabawa/ui/theme.dart';
 import 'package:sabawa/ui/screens/login.dart';
 import 'package:sabawa/ui/screens/settings.dart';
 import 'package:sabawa/ui/screens/profile.dart';
+import 'package:sabawa/ui/screens/projects.dart';
 import 'package:sabawa/controller/tab_controller.dart';
 
 class SabawaApp extends StatelessWidget {
@@ -19,8 +20,8 @@ class SabawaApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/settings': (context) => Settings(),
         '/profile': (context) => Profile(),
-        '/friends': (context) => Profile(),
-        '/projects': (context) => Profile(),
+        //'/friends': (context) => Friends(),
+        '/projects': (context) => Projects(),
       },
     );
   }

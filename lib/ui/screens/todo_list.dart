@@ -7,6 +7,8 @@ import 'package:sabawa/state_widget.dart';
 import 'package:sabawa/ui/widgets/todo_item.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
+import 'package:sabawa/ui/screens/add/add_task.dart';
+
 class ToDoList extends StatefulWidget {
 
   @override
@@ -48,8 +50,6 @@ class _ToDoListState extends State<ToDoList> {
   @override
   Widget build(BuildContext context) {
 
-    Text("TEST");
-
     appState = StateWidget.of(context).state;
 
     return Padding(
@@ -69,7 +69,7 @@ class _ToDoListState extends State<ToDoList> {
           ),
           Expanded(
             child: new StreamBuilder(
-              stream: Firestore.instance.collection('Todos').snapshots(),
+              stream: Firestore.instance.collection('tasks').snapshots(),
               //stream: Firestore.instance.collection('Tasks').where("Giver", isEqualTo: appState.user.uid).snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -100,6 +100,17 @@ class _ToDoListState extends State<ToDoList> {
                     });
               },
             ),
+          ),
+          ListTile(
+            leading: new FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AddTask("", appState.currentProjectID)),
+                  );
+                },
+                child: Icon(Icons.add)
+            ),
+            title: new Text("New task"),
           ),
         ],
       ),

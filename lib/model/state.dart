@@ -6,11 +6,15 @@ class StateModel {
   FirebaseUser user;
   bool newuser;
   User currentUser;
+  String currentProjectID;
+  String currentProjectName;
 
   StateModel({
     this.isLoading = false,
     this.user,
     this.newuser,
-    this.currentUser
+    this.currentUser,
+    this.currentProjectID = "",
+    this.currentProjectName = ""
   });
 }
