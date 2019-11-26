@@ -142,14 +142,29 @@ class _AddTaskState extends State<AddTask> {
                 DocumentReference docRef = Firestore.instance.collection('tasks').document();
                 docRef.setData({
                   'task' : _task,
+                  // TODO: decide if done (boolean) or status (numbers)
                   'done': false,
+                  'status': 0,
                   'enddate': _date,
                   'hours': int.parse(_hours),
                   'points': int.parse(_hours) * 60,
                   'phase': _phase,
                   'project': appState.currentProjectID
                 });
-                Navigator.pop(context);
+
+                final DocumentReference postRef = Firestore.instance.collection('phases').document(_phase);
+                Firestore.instance.runTransaction((Transaction tx) async {
+                  DocumentSnapshot postSnapshot = await tx.get(postRef);
+                  if (postSnapshot.exists) {
+                    await tx.update(postRef, <String, dynamic>{
+                      'tasks': FieldValue.arrayUnion([docRef.documentID])
+                    });
+                  }
+                });
+
+                Navigator.pop(context, postRef.documentID);
+
+                //Navigator.pushNamed(context, '/');
               }
             },
           )

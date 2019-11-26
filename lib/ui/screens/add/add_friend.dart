@@ -50,7 +50,6 @@ class AddFriendState extends State<AddFriend> {
   }
 
   addFriend(String friendID) {
-
     final DocumentReference postRef = Firestore.instance.collection('users').document(appState.user.uid);
     Firestore.instance.runTransaction((Transaction tx) async {
       DocumentSnapshot postSnapshot = await tx.get(postRef);

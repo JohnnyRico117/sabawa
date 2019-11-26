@@ -68,8 +68,12 @@ class _StateWidgetState extends State<StateWidget> {
 
     print("ProjectID: " + projectID);
 
-    if(projectID == null) {
+    if(projectID.isEmpty) {
       // TODO: Change Route to select a project oooor look if the user has only one and take that one
+
+      setState(() {
+        state.currentProjectName = "<none>";
+      });
     } else {
       DocumentSnapshot querySnapshot = await Firestore.instance
           .collection('projects')

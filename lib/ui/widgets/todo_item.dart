@@ -184,7 +184,7 @@ class _ToDoItemState extends State<ToDoItem> {
   }
 
   String formatTimestamp(DateTime timestamp) {
-    var format = new DateFormat('d MMM, hh:mm a');
+    var format = new DateFormat('d MMM, hh:mm');
     return format.format(timestamp);
   }
 
