@@ -20,5 +20,4 @@ class User {
       friends: (snap.data.containsKey('friends') && snap.data['friends'] is List) ? new List<String>.from(snap.data['friends']) : null,
       projects: (snap.data.containsKey('projects') && snap.data['projects'] is List) ? new List<String>.from(snap.data['projects']) : null,
   );
-
 }

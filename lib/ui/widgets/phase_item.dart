@@ -313,13 +313,16 @@ class _PhaseItemState extends State<PhaseItem> {
       _percent = _doneTasks / _tasks.length;
     }
 
-    setState(() {
-      all_tasks = _tasks.length;
-      done_tasks = _doneTasks;
-      all_points = _allPoints;
-      reached_points = _reachedPoints;
-      percent = _percent;
-    });
+    if(mounted) {
+      setState(() {
+        all_tasks = _tasks.length;
+        done_tasks = _doneTasks;
+        all_points = _allPoints;
+        reached_points = _reachedPoints;
+        percent = _percent;
+      });
+    }
+
   }
 
   void _initDataAfterPop() async {
@@ -353,13 +356,15 @@ class _PhaseItemState extends State<PhaseItem> {
 
       double _percent = _doneTasks / _tasks.length;
 
-      setState(() {
-        all_tasks = _tasks.length;
-        done_tasks = _doneTasks;
-        all_points = _allPoints;
-        reached_points = _reachedPoints;
-        percent = _percent;
-      });
+      if(mounted) {
+        setState(() {
+          all_tasks = _tasks.length;
+          done_tasks = _doneTasks;
+          all_points = _allPoints;
+          reached_points = _reachedPoints;
+          percent = _percent;
+        });
+      }
     }
 
   }

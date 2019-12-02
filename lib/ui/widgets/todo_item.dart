@@ -3,13 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 import 'package:sabawa/model/state.dart';
+import 'package:sabawa/model/phase.dart';
 import 'package:sabawa/state_widget.dart';
 
 class ToDoItem extends StatefulWidget {
 
   final DocumentSnapshot snap;
+  final Phase phase;
 
-  ToDoItem(this.snap);
+  ToDoItem(this.snap, this.phase);
 
   @override
   _ToDoItemState createState() => _ToDoItemState();
@@ -69,7 +71,7 @@ class _ToDoItemState extends State<ToDoItem> {
                       Container(
                         width: 50.0,
                         decoration: BoxDecoration(
-                            color: Color(0xFF4FC3F7),
+                            color: widget.phase != null ? Color(widget.phase.color) : Colors.white,
                             shape: BoxShape.circle
                         ),
                       ),

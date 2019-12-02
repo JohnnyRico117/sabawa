@@ -17,8 +17,6 @@ class _ProjectsState extends State<Projects> {
 
   StateModel appState;
 
-
-
   @override
   Widget build(BuildContext context) {
 
