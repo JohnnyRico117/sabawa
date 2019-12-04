@@ -9,8 +9,8 @@ import 'package:sabawa/state_widget.dart';
 
 class AddTask extends StatefulWidget {
 
-  String phaseID;
-  String projectID;
+  final String phaseID;
+  final String projectID;
 
   AddTask(this.phaseID, this.projectID);
 

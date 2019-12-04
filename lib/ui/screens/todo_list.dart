@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/model/phase.dart';
@@ -22,7 +23,8 @@ class _ToDoListState extends State<ToDoList> {
   String _sortby;
   List<String> _phaseFilter = new List();
   List<Phase> _phases = new List();
-  bool filter1 = false;
+  Wrap _checkBoxWrap = new Wrap();
+  bool _expanded = false;
 
   @override
   void initState() {
@@ -67,44 +69,26 @@ class _ToDoListState extends State<ToDoList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text("Sort by: "),
-              DropdownButton(
-                  value: _sortby,
-                  items: _dropDownMenuItems,
-                  onChanged: changedDropDownItem
+              Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: DropdownButton(
+                    value: _sortby,
+                    items: _dropDownMenuItems,
+                    onChanged: changedDropDownItem
+                ),
               ),
-              Text("Filter:"),
-              Text("1:"),
-              Checkbox(
-                  value: filter1,
-                  onChanged: (bool value) {
-                    print(value);
-                    print(filter1);
-                    List<String> _temp = new List();
-                    if (this.mounted) {
-                      if (value) {
-                        setState(() {
-                          filter1 = value;
-                          //_temp.add("VhrdI7VVMjfDhoOBmODU");
-                          //_phaseFilter = _temp;
-                          _phaseFilter.add("VhrdI7VVMjfDhoOBmODU");
-                        });
-                      } else {
-                        setState(() {
-                          filter1 = value;
-                          _phaseFilter.remove("VhrdI7VVMjfDhoOBmODU");
-                        });
-                      }
-                    }
-                    print(_phaseFilter);
-                  }
+              Text("Filter by:"),
+              IconButton(
+                  icon: _expanded ? Icon(Icons.arrow_drop_up, color: Colors.black54) : Icon(Icons.arrow_drop_down, color: Colors.black54),
+                  onPressed: () {
+                    setState(() {
+                      _expanded = !_expanded;
+                    });
+                  },
               ),
-              Text("2:"),
-              Checkbox(
-                  value: false,
-                  onChanged: null
-              )
             ],
           ),
+          _expanded ? _checkBoxWrap : Container(),
           Expanded(
             child: new StreamBuilder(
               stream: Firestore.instance.collection('tasks').snapshots(),
@@ -169,15 +153,19 @@ class _ToDoListState extends State<ToDoList> {
     );
   }
 
-  void initPhases() async {
-    List<Phase> _ph = new List();
 
-    QuerySnapshot querysnaps = await Firestore.instance
+
+  void initPhases() async {
+
+    List<Phase> _ph = new List();
+    final prefs = await SharedPreferences.getInstance();
+
+    QuerySnapshot querySnaps = await Firestore.instance
         .collection('phases')
-        .where("projectID", isEqualTo: "ZPGphdEX3iM5NIYMN6G0")
+        .where("projectID", isEqualTo: prefs.getString('projectID'))
         .getDocuments();
 
-    List<DocumentSnapshot> snaps = querysnaps.documents;
+    List<DocumentSnapshot> snaps = querySnaps.documents;
 
     snaps.forEach((snap) {
       _ph.add(Phase.fromSnap(snap));
@@ -185,9 +173,54 @@ class _ToDoListState extends State<ToDoList> {
 
     setState(() {
       _phases = _ph;
+      initCheckBoxes(_ph);
     });
+  }
 
-
+  void initCheckBoxes(List<Phase> phases) {
+    List<Widget> list = new List<Widget>();
+    for(var i = 0; i < phases.length; i++){
+      list.add(
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 10.0),
+              child: Container(
+                width: 20.0,
+                height: 20.0,
+                decoration: BoxDecoration(
+                    color: Color(_phases[i].color),
+                    shape: BoxShape.circle
+                ),
+              ),
+            ),
+            Text(_phases[i].name),
+            Checkbox(
+              value: _phaseFilter.contains(phases[i].id),
+              onChanged: (bool value) {
+                //if (this.mounted) {
+                if (value) {
+                  setState(() {
+                    _phaseFilter.add(phases[i].id);
+                    initCheckBoxes(phases);
+                  });
+                } else {
+                  setState(() {
+                    _phaseFilter.remove(phases[i].id);
+                    initCheckBoxes(phases);
+                  });
+                }
+                //}
+              }
+            ),
+          ],
+        )
+      );
+    }
+    setState(() {
+      _checkBoxWrap = Wrap(children: list);
+    });
   }
 
   @override

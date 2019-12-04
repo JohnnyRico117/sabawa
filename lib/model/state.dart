@@ -4,7 +4,7 @@ import 'package:sabawa/model/user.dart';
 class StateModel {
   bool isLoading;
   FirebaseUser user;
-  bool newuser;
+  bool newUser;
   User currentUser;
   String currentProjectID;
   String currentProjectName;
@@ -12,7 +12,7 @@ class StateModel {
   StateModel({
     this.isLoading = false,
     this.user,
-    this.newuser,
+    this.newUser,
     this.currentUser,
     this.currentProjectID = "",
     this.currentProjectName = ""

@@ -112,7 +112,7 @@ class _StateWidgetState extends State<StateWidget> {
       final QuerySnapshot result = await Firestore.instance.collection('users').where('id', isEqualTo: firebaseUser.uid).getDocuments();
       final List<DocumentSnapshot> documents = result.documents;
       if (documents.length == 0) {
-        state.newuser = true;
+        state.newUser = true;
         Firestore.instance.collection('users').document(firebaseUser.uid).setData({
           'id': firebaseUser.uid,
           'username': firebaseUser.displayName,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:sabawa/utils/enums/card_types.dart';
@@ -26,17 +25,16 @@ class _ProgressCardState extends State<ProgressCard> {
   StateModel appState;
 
   int _tasks = 0;
-  int _alltasks = 0;
+  int _allTasks = 0;
   double _percent = 0.0;
   int _points = 0;
-  int _allpoints = 0;
+  int _allPoints = 0;
 
   @override
   void initState() {
     super.initState();
     initData();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -120,8 +118,8 @@ class _ProgressCardState extends State<ProgressCard> {
                                           )
                                       ),
                                       Text(
-                                        widget.type == CardType.MISSED ? _alltasks.toString() :
-                                        _tasks.toString() + "/" + _alltasks.toString(),
+                                        widget.type == CardType.MISSED ? _allTasks.toString() :
+                                        _tasks.toString() + "/" + _allTasks.toString(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -165,8 +163,8 @@ class _ProgressCardState extends State<ProgressCard> {
                                           )
                                       ),
                                       Text(
-                                        widget.type == CardType.MISSED ? _allpoints.toString() :
-                                        _points.toString() + "/" + _allpoints.toString(),
+                                        widget.type == CardType.MISSED ? _allPoints.toString() :
+                                        _points.toString() + "/" + _allPoints.toString(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -176,51 +174,6 @@ class _ProgressCardState extends State<ProgressCard> {
                                     ],
                                   ),
                                 ),
-//                                Padding(
-//                                  padding: EdgeInsets.only(
-//                                      left: 20.0,
-//                                      right: 5.0,
-//                                      top: 5.0,
-//                                      bottom: 5.0
-//                                  ),
-//                                  child: Row(
-//                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                                    children: <Widget>[
-//                                      RichText(
-//                                          text: TextSpan(
-//                                              children: [
-//                                                WidgetSpan(
-//                                                    child: Padding(
-//                                                        padding: EdgeInsets.only(right: 5.0),
-//                                                        child: Icon(
-//                                                          Icons.error,
-//                                                          color: Colors.red,
-//                                                        )
-//                                                    )
-//                                                ),
-//                                                TextSpan(
-//                                                  style: TextStyle(
-//                                                    wordSpacing: 20.0,
-//                                                    fontWeight: FontWeight.bold,
-//                                                    color: Colors.black,
-//                                                    fontSize: 16.0,
-//                                                  ),
-//                                                  text: "Missed:",
-//                                                ),
-//                                              ]
-//                                          )
-//                                      ),
-//                                      Text(
-//                                        "0",
-//                                        style: TextStyle(
-//                                          fontWeight: FontWeight.bold,
-//                                          color: Colors.black,
-//                                          fontSize: 16.0,
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
                               ],
                             ),
                           ),
@@ -240,10 +193,18 @@ class _ProgressCardState extends State<ProgressCard> {
     int _pointsCounter = 0;
     int _allPointsCounter = 0;
 
+    // TODO: delete prints
+//    print(new Timestamp.now().toDate());
+//    print((new Timestamp.now().seconds / 3600 / 24).toString());
+
     for (DocumentSnapshot snap in widget.snaps) {
-      final double enddate = snap.data['enddate'].seconds / 3600 / 24;
+      final double endDate = snap.data['enddate'].seconds / 3600 / 24;
       final double now = new Timestamp.now().seconds / 3600 / 24;
-      double diff = now - enddate;
+      double diff = endDate -now;
+
+//      print(snap.data['enddate'].toDate());
+//      print((snap.data['enddate'].seconds / 3600 / 24).toString());
+//      print(diff.toString());
 
       switch (widget.type) {
         case CardType.MISSED:
@@ -294,13 +255,12 @@ class _ProgressCardState extends State<ProgressCard> {
 
       if (mounted) {
         setState(() {
-          _alltasks = _allTasksCounter;
+          _allTasks = _allTasksCounter;
           _tasks = _taskCounter;
           _points = _pointsCounter;
-          _allpoints = _allPointsCounter;
+          _allPoints = _allPointsCounter;
           if (_allTasksCounter != 0) {
             _percent = _taskCounter / _allTasksCounter;
-            print(_percent.toString());
           }
         });
       }

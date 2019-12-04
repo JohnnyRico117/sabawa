@@ -25,13 +25,14 @@ class _PhaseItemState extends State<PhaseItem> {
   bool expand = false;
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
-  final _smallerFont = const TextStyle(fontSize: 12.0);
-  final _boldFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+  // TODO: Remove
+  //final _smallerFont = const TextStyle(fontSize: 12.0);
+  //final _boldFont = const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
 
-  int all_tasks = 0;
-  int done_tasks = 0;
-  int all_points = 0;
-  int reached_points = 0;
+  int allTasks = 0;
+  int doneTasks = 0;
+  int allPoints = 0;
+  int reachedPoints = 0;
   double percent = 0.0;
 
   @override
@@ -136,7 +137,7 @@ class _PhaseItemState extends State<PhaseItem> {
                               )
                           ),
                           Text(
-                            done_tasks.toString() + "/" + all_tasks.toString(),
+                            doneTasks.toString() + "/" + allTasks.toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -181,7 +182,7 @@ class _PhaseItemState extends State<PhaseItem> {
                               )
                           ),
                           Text(
-                            reached_points.toString() + "/" + all_points.toString(),
+                            reachedPoints.toString() + "/" + allPoints.toString(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -315,10 +316,10 @@ class _PhaseItemState extends State<PhaseItem> {
 
     if(mounted) {
       setState(() {
-        all_tasks = _tasks.length;
-        done_tasks = _doneTasks;
-        all_points = _allPoints;
-        reached_points = _reachedPoints;
+        allTasks = _tasks.length;
+        doneTasks = _doneTasks;
+        allPoints = _allPoints;
+        reachedPoints = _reachedPoints;
         percent = _percent;
       });
     }
@@ -358,10 +359,10 @@ class _PhaseItemState extends State<PhaseItem> {
 
       if(mounted) {
         setState(() {
-          all_tasks = _tasks.length;
-          done_tasks = _doneTasks;
-          all_points = _allPoints;
-          reached_points = _reachedPoints;
+          allTasks = _tasks.length;
+          doneTasks = _doneTasks;
+          allPoints = _allPoints;
+          reachedPoints = _reachedPoints;
           percent = _percent;
         });
       }
