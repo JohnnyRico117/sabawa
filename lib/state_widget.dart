@@ -63,6 +63,7 @@ class _StateWidgetState extends State<StateWidget> {
   }
 
   void initProject() async {
+    print("Init Project");
     final prefs = await SharedPreferences.getInstance();
     final projectID = prefs.getString('projectID') ?? "";
 
@@ -81,6 +82,7 @@ class _StateWidgetState extends State<StateWidget> {
           .get();
       if (querySnapshot.exists) {
         setState(() {
+          state.currentProjectSnap = querySnapshot;
           state.currentProjectID = projectID;
           state.currentProjectName = querySnapshot['name'];
         });

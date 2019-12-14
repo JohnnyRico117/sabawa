@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Phase {
   String id;
   String name;
+  int position;
   int color;
   String projectID;
   Timestamp enddate;
@@ -12,6 +13,7 @@ class Phase {
   Phase({
     this.id,
     this.name,
+    this.position,
     this.color,
     this.projectID,
     this.enddate,
@@ -23,6 +25,7 @@ class Phase {
     id: snap.documentID,
     name: snap.data.containsKey('name') ? snap.data['name'] : '',
     color: snap.data.containsKey('color') ? snap.data['color'] : 0,
+    position: snap.data.containsKey('position') ? snap.data['position'] : 0,
     projectID: snap.data.containsKey('projectID') ? snap.data['projectID'] : '',
     enddate: snap.data.containsKey('enddate') ? snap.data['enddate'] : null,
     tasks: (snap.data.containsKey('tasks') && snap.data['tasks'] is List) ? new List<String>.from(snap.data['tasks']) : null,

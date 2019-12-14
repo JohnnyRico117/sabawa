@@ -25,7 +25,6 @@ class AddPhaseState extends State<AddPhase> {
   String _phase = '';
   Timestamp _date;
   Color _color;
-  String _endddate = '';
 
   var txt = new TextEditingController();
   DateFormat format = new DateFormat("dd.MM.yyyy 'at' hh:mm");
@@ -65,6 +64,7 @@ class AddPhaseState extends State<AddPhase> {
                       setState(() {
                         _phase = value;
                       });
+                      return null;
                     }
                   },
                 ),
@@ -108,6 +108,8 @@ class AddPhaseState extends State<AddPhase> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter a Date';
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -165,29 +167,45 @@ class AddPhaseState extends State<AddPhase> {
     }
   }
 
-  void _addPhase() {
-    DocumentReference docRef = Firestore.instance.collection('phases').document();
-    docRef.setData({
-      'name' : _phase,
-      'color': _color.value,
-      'projectID' : appState.currentProjectID,
-      'enddate': _date,
+  void _addPhase() async {
 
-      //'owner': appState.user.uid,
-    });
+    DocumentSnapshot querySnapshot = await Firestore.instance
+        .collection('projects')
+        .document(appState.currentProjectID)
+        .get();
+    if (querySnapshot.exists) {
+      print("1. Phase number: " + querySnapshot.data['phases'].length.toString());
+      DocumentReference docRef = Firestore.instance.collection('phases').document();
+      docRef.setData({
+        'name' : _phase,
+        'color': _color.value,
+        'projectID' : appState.currentProjectID,
+        'enddate': _date,
+        'owner': appState.user.uid,
+      });
 
-    // TODO: Delete
-    print("ID: " + docRef.documentID.toString());
+      // TODO: Delete
+      print("ID: " + docRef.documentID.toString());
 
-    final DocumentReference postRef = Firestore.instance.collection('projects').document(appState.currentProjectID);
-    Firestore.instance.runTransaction((Transaction tx) async {
-      DocumentSnapshot postSnapshot = await tx.get(postRef);
-      if (postSnapshot.exists) {
-        await tx.update(postRef, <String, dynamic>{
-          'phases': FieldValue.arrayUnion([docRef.documentID.toString()])
-        });
-      }
-    });
+      appState.currentProjectSnap.reference.updateData({
+        'phases': FieldValue.arrayUnion([docRef.documentID.toString()]),
+      });
+    }
+
+
+
+
+    //print("2. Phase number: " + appState.currentProjectSnap.data['phases'].length.toString());
+
+//    final DocumentReference postRef = Firestore.instance.collection('projects').document(appState.currentProjectID);
+//    Firestore.instance.runTransaction((Transaction tx) async {
+//      DocumentSnapshot postSnapshot = await tx.get(postRef);
+//      if (postSnapshot.exists) {
+//        await tx.update(postRef, <String, dynamic>{
+//          'phases': FieldValue.arrayUnion([docRef.documentID.toString()])
+//        });
+//      }
+//    });
 
     //appState.currentUser.projects.add(docRef.documentID.toString());
 

@@ -7,8 +7,9 @@ import 'package:sabawa/state_widget.dart';
 import 'package:sabawa/model/state.dart';
 
 import 'package:sabawa/ui/screens/todo_list.dart';
+import 'package:sabawa/ui/screens/home.dart';
 import 'package:sabawa/ui/screens/login.dart';
-import 'package:sabawa/ui/screens/progress.dart';
+//import 'package:sabawa/ui/screens/progress.dart';
 import 'package:sabawa/ui/screens/friend_list.dart';
 import 'package:sabawa/ui/screens/phases.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
@@ -24,10 +25,10 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   int _selectedIndex = 0;
 
   List<Widget> _widgetOptions = <Widget>[
-    Progress(),
+    Home(),
+    Phases(),
     ToDoList(),
     FriendList(),
-    Phases(),
     Center(child: Icon(Icons.lightbulb_outline)),
   ];
 
@@ -76,7 +77,8 @@ class SabawaTabControllerState extends State<SabawaTabController> {
           )
         ),
         title: GestureDetector(
-          child: Text(appState.currentProjectName),
+          //child: Text(appState.currentProjectName),
+          child: Text("Project"),
           onTap: () => Navigator.pushNamed(context, '/projects'),
         ),
         actions: <Widget>[
@@ -99,18 +101,18 @@ class SabawaTabControllerState extends State<SabawaTabController> {
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.blue,
+            icon: Icon(Icons.storage),
+            title: Text('Phases'),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.blue,
             icon: Icon(Icons.list),
             title: Text('To-Do'),
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.blue,
             icon: Icon(Icons.people),
-            title: Text('Friends'),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.storage),
-            title: Text('Phases'),
+            title: Text('Team'),
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.blue,

@@ -25,10 +25,14 @@ class _AddTaskState extends State<AddTask> {
   final _formKey = GlobalKey<FormState>();
 
   String _task = '';
+  String _detail = '';
+  String _link = '';
   Timestamp _date;
   String _hours;
+  String _costs = '0';
 
   String _phase;
+  String _followUpPhase;
   List<String> _phases;
   List<DropdownMenuItem<String>> _dropDownMenuItems;
 
@@ -39,12 +43,6 @@ class _AddTaskState extends State<AddTask> {
   void initState() {
     super.initState();
     initDropdown();
-  }
-
-  void changedDropDownItem(String selectedPhase) {
-    setState(() {
-      _phase = selectedPhase;
-    });
   }
 
   @override
@@ -76,8 +74,44 @@ class _AddTaskState extends State<AddTask> {
                       setState(() {
                         _task = value;
                       });
+                      return null;
                     }
                   },
+                ),
+                TextFormField(
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                      hintText: 'Enter more detailed information... (optional)',
+                      contentPadding: const EdgeInsets.all(16.0),
+                  ),
+                  maxLines: 4,
+                  onChanged: (value) {
+                    setState(() {
+                      _detail = value;
+                    });
+                  }
+//                  validator: (value) {
+//                    if (value.isEmpty) {
+//                      return 'Please enter something to do';
+//                    } else {
+//                      setState(() {
+//                        _task = value;
+//                      });
+//                      return null;
+//                    }
+//                  },
+                ),
+                TextFormField(
+                    autofocus: true,
+                    decoration: new InputDecoration(
+                        hintText: 'Enter link... (optional)',
+                        contentPadding: const EdgeInsets.all(16.0)
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _link = value;
+                      });
+                    }
                 ),
                 TextFormField(
                   decoration: new InputDecoration(
@@ -95,8 +129,24 @@ class _AddTaskState extends State<AddTask> {
                       setState(() {
                         _hours = value;
                       });
+                      return null;
                     }
                   },
+                ),
+                TextFormField(
+                  decoration: new InputDecoration(
+                      hintText: 'Enter costs... (optional)',
+                      contentPadding: const EdgeInsets.all(16.0)
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(),
+                  inputFormatters: [
+                    WhitelistingTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _costs = value;
+                    });
+                  }
                 ),
                 InkWell(
                   onTap: () {
@@ -112,6 +162,8 @@ class _AddTaskState extends State<AddTask> {
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter a Date';
+                        } else {
+                          return null;
                         }
                       },
                     ),
@@ -126,7 +178,21 @@ class _AddTaskState extends State<AddTask> {
                       new DropdownButton(
                         value: _phase,
                         items: _dropDownMenuItems,
-                        onChanged: changedDropDownItem,
+                        onChanged: _setPhase,
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Follow-up phase: "),
+                      new DropdownButton(
+                        value: _followUpPhase,
+                        items: _dropDownMenuItems,
+                        onChanged: _setFollowUpPhase,
                       )
                     ],
                   ),
@@ -134,21 +200,24 @@ class _AddTaskState extends State<AddTask> {
               ],
             ),
           ),
-
           RaisedButton(
             child: Text("Submit"),
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 DocumentReference docRef = Firestore.instance.collection('tasks').document();
                 docRef.setData({
-                  'task' : _task,
+                  'task': _task,
+                  'detail': _detail,
+                  'link': _link,
                   // TODO: decide if done (boolean) or status (numbers)
                   'done': false,
                   'status': 0,
                   'enddate': _date,
                   'hours': int.parse(_hours),
                   'points': int.parse(_hours) * 60,
+                  'costs': int.parse(_costs),
                   'phase': _phase,
+                  'followUpPhase': _followUpPhase,
                   'project': appState.currentProjectID
                 });
 
@@ -220,8 +289,20 @@ class _AddTaskState extends State<AddTask> {
     setState(() {
       _dropDownMenuItems = items;
       if (widget.phaseID.isNotEmpty) {
-        changedDropDownItem(widget.phaseID);
+        _setPhase(widget.phaseID);
       }
+    });
+  }
+
+  void _setPhase(String selectedPhase) {
+    setState(() {
+      _phase = selectedPhase;
+    });
+  }
+
+  void _setFollowUpPhase(String selectedPhase) {
+    setState(() {
+      _followUpPhase = selectedPhase;
     });
   }
 }

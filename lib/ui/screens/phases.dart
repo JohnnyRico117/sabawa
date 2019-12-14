@@ -29,40 +29,58 @@ class _PhasesState extends State<Phases> {
 
     appState = StateWidget.of(context).state;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: new StreamBuilder(
-              //stream: Firestore.instance.collection('phases').snapshots(),
-              stream: Firestore.instance.collection('phases').where("projectID", isEqualTo: appState.currentProjectID).snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) return LoadingIndicator();
-                return ListView.builder(
-                  padding: const EdgeInsets.all(16.0),
-                  //itemExtent: 80.0,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, i) {
-                    return PhaseItem(snapshot.data.documents[i]);
-                  }
-                );
-              },
-            ),
-          ),
-          ListTile(
-            leading: new FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddPhase()),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5.0),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: new StreamBuilder(
+                stream: Firestore.instance.collection('phases').where("projectID", isEqualTo: appState.currentProjectID).snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return LoadingIndicator();
+//                return ListView.builder(
+//                  padding: const EdgeInsets.all(16.0),
+//                  //itemExtent: 80.0,
+//                  itemCount: snapshot.data.documents.length,
+//                  itemBuilder: (context, i) {
+//                    return PhaseItem(snapshot.data.documents[i]);
+//                  }
+//                );
+                  snapshot.data.documents.sort((a, b) => a['position'].compareTo(b['position']));
+
+                  return new ListView(
+                    padding: const EdgeInsets.all(16.0),
+                    children: snapshot.data.documents
+                        .map((document) {
+                      return PhaseItem(document);
+                    }).toList(),
                   );
                 },
-                child: Icon(Icons.add)
+              ),
             ),
-            title: new Text("New Phase"),
-          ),
-        ],
+//            ListTile(
+//              leading: new FloatingActionButton(
+//                  onPressed: () {
+//                    Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => AddPhase()),
+//                    );
+//                  },
+//                  child: Icon(Icons.add)
+//              ),
+//              title: new Text("New Phase"),
+//            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddPhase()),
+            );
+          },
+          child: Icon(Icons.add)
       ),
     );
   }

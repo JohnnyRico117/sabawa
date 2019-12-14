@@ -5,10 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sabawa/utils/enums/card_types.dart';
 
-import 'package:sabawa/model/state.dart';
-import 'package:sabawa/state_widget.dart';
+//import 'package:sabawa/model/state.dart';
+//import 'package:sabawa/state_widget.dart';
 
 import 'package:sabawa/ui/widgets/progress_card.dart';
+import 'package:sabawa/ui/widgets/profile_card.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
 class Progress extends StatefulWidget {
@@ -36,12 +37,11 @@ class _ProgressState extends State<Progress> {
 
     if (_snaps.isEmpty) return LoadingIndicator();
 
-    print("eeee" + _missed.toString());
-
     return new Container(
       padding: const EdgeInsets.all(12),
       child: ListView(
         children: <Widget>[
+          ProfileCard(),
           !_missed ? Container() : ProgressCard(CardType.MISSED, _snaps),
           ProgressCard(CardType.DAILY, _snaps),
           ProgressCard(CardType.WEEKLY, _snaps),
@@ -66,14 +66,12 @@ class _ProgressState extends State<Progress> {
           .getDocuments();
 
       for (DocumentSnapshot snap in querysnaps.documents) {
-        final double enddate = snap.data['enddate'].seconds / 3600 / 24;
+        final double endDate = snap.data['enddate'].seconds / 3600 / 24;
         final double now = new Timestamp.now().seconds / 3600 / 24;
 
-        double diff = now - enddate;
-
+        double diff = now - endDate;
 
         if (diff < 0) {
-          print("JO");
           _temp = true;
           break;
         }

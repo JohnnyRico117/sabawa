@@ -1,110 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:sabawa/model/state.dart';
-import 'package:sabawa/state_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Profile extends StatefulWidget {
+import 'package:sabawa/utils/enums/card_types.dart';
+
+//import 'package:sabawa/model/state.dart';
+//import 'package:sabawa/state_widget.dart';
+
+import 'package:sabawa/ui/widgets/progress_card.dart';
+import 'package:sabawa/ui/widgets/profile_card.dart';
+import 'package:sabawa/ui/widgets/loading_indicator.dart';
+
+class Home extends StatefulWidget {
+
   @override
-  _ProfileState createState() => _ProfileState();
+  _HomeState createState() => _HomeState();
 }
 
-class _ProfileState extends State<Profile> {
+class _HomeState extends State<Home> {
 
-  StateModel appState;
+  //StateModel appState;
+  bool _missed = false;
+
+  List<DocumentSnapshot> _snaps = new List();
+
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    appState = StateWidget.of(context).state;
+    //appState = StateWidget.of(context).state;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(appState.user.displayName),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            _buildAvatar(),
-            _buildUserInfo(),
-            _buildButtons(),
-          ],
-        ),
-      )
-    );
-  }
+    //if (_snaps.isEmpty) return LoadingIndicator();
 
-  Widget _buildAvatar() {
-    return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: CircleAvatar(
-        backgroundImage: new NetworkImage(appState.user.photoUrl),
-        radius: 50.0,
-      ),
-    );
-  }
-
-  Widget _buildUserInfo() {
     return new Container(
         padding: const EdgeInsets.all(12),
-        child: Row(
+        child: ListView(
           children: <Widget>[
-            Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: Text(
-                            appState.user.displayName.split(" ").first,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0
-                            )
-                        )
-                    ),
-//                    Container(
-//                      padding: const EdgeInsets.all(12),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          Icon(Icons.star, color: Colors.yellow),
-//                          Container(
-//                              padding: const EdgeInsets.only(left: 8),
-//                              child: Text(
-//                                appState.currentUser.points.toString(),
-//                                style: TextStyle(
-//                                  fontWeight: FontWeight.bold,
-//                                  fontSize: 20.0
-//                                ),
-//                              )
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                    Container(
-//                      padding: const EdgeInsets.all(12),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          Icon(Icons.people, color: Colors.blue),
-//                          Container(
-//                              padding: const EdgeInsets.only(left: 8),
-//                              child: Text(
-//                                appState.currentUser.friends.length.toString(),
-//                                style: TextStyle(
-//                                    fontWeight: FontWeight.bold,
-//                                    fontSize: 20.0
-//                                ),
-//                              )
-//                          )
-//                        ],
-//                      ),
-//                    ),
-                  ],
-                )
-            )
+            ProfileCard(),
+            _buildButtons(),
+//            !_missed ? Container() : ProgressCard(CardType.MISSED, _snaps),
+//            ProgressCard(CardType.DAILY, _snaps),
+//            ProgressCard(CardType.WEEKLY, _snaps),
+//            ProgressCard(CardType.MONTHLY, _snaps),
+//            ProgressCard(CardType.PROJECT, _snaps),
           ],
         )
     );
+  }
+
+  void initData() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString('projectID');
+
+    if (id != null) {
+      bool _temp = false;
+
+      QuerySnapshot querysnaps = await Firestore.instance
+          .collection('tasks')
+          .where("project", isEqualTo: id)
+          .getDocuments();
+
+      for (DocumentSnapshot snap in querysnaps.documents) {
+        final double endDate = snap.data['enddate'].seconds / 3600 / 24;
+        final double now = new Timestamp.now().seconds / 3600 / 24;
+
+        double diff = now - endDate;
+
+        if (diff < 0) {
+          _temp = true;
+          break;
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          _missed = _temp;
+          _snaps = querysnaps.documents;
+        });
+      }
+    }
   }
 
   Widget _buildButtons() {
@@ -256,46 +236,6 @@ class _ProfileState extends State<Profile> {
           ],
         )
       ],
-    );
-  }
-
-  Widget _buildCards(String title, IconData icon, String route) {
-    Card _buildCard() {
-      return Card(
-        elevation: 5.0,
-        child: Container(
-          decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-          child: ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: 20.0, vertical: 0.1),
-              leading: Icon(icon, color: Colors.white),
-              title: Text(
-                title,
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
-          ),
-        ),
-      );
-    }
-
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, route),
-      child: _buildCard()
-//      child: Padding(
-//        padding: EdgeInsets.symmetric(horizontal: 3.0),
-//        child: Card(
-//          child: Column(
-//            mainAxisSize: MainAxisSize.min,
-//            crossAxisAlignment: CrossAxisAlignment.start,
-//            children: <Widget>[
-//              _buildCard(),
-//            ],
-//          ),
-//        ),
-//      ),
     );
   }
 

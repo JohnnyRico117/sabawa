@@ -200,7 +200,7 @@ class _ProgressCardState extends State<ProgressCard> {
     for (DocumentSnapshot snap in widget.snaps) {
       final double endDate = snap.data['enddate'].seconds / 3600 / 24;
       final double now = new Timestamp.now().seconds / 3600 / 24;
-      double diff = endDate -now;
+      double diff = endDate - now;
 
 //      print(snap.data['enddate'].toDate());
 //      print((snap.data['enddate'].seconds / 3600 / 24).toString());
@@ -224,7 +224,7 @@ class _ProgressCardState extends State<ProgressCard> {
           }
           break;
         case CardType.WEEKLY:
-          if (diff >= 1 && diff < 7) {
+          if (diff >= 0 && diff < 7) {
             _allTasksCounter++;
             _allPointsCounter += snap.data['points'];
             if (snap.data['done']) {
@@ -234,7 +234,7 @@ class _ProgressCardState extends State<ProgressCard> {
           }
           break;
         case CardType.MONTHLY:
-          if (diff >= 7 && diff < 30) {
+          if (diff >= 0 && diff < 30) {
             _allTasksCounter++;
             _allPointsCounter += snap.data['points'];
             if (snap.data['done']) {
@@ -252,18 +252,18 @@ class _ProgressCardState extends State<ProgressCard> {
           }
           break;
       }
+    }
 
-      if (mounted) {
-        setState(() {
-          _allTasks = _allTasksCounter;
-          _tasks = _taskCounter;
-          _points = _pointsCounter;
-          _allPoints = _allPointsCounter;
-          if (_allTasksCounter != 0) {
-            _percent = _taskCounter / _allTasksCounter;
-          }
-        });
-      }
+    if (mounted) {
+      setState(() {
+        _allTasks = _allTasksCounter;
+        _tasks = _taskCounter;
+        _points = _pointsCounter;
+        _allPoints = _allPointsCounter;
+        if (_allTasksCounter != 0) {
+          _percent = _taskCounter / _allTasksCounter;
+        }
+      });
     }
   }
 }

@@ -33,6 +33,8 @@ class _PhaseItemState extends State<PhaseItem> {
   int doneTasks = 0;
   int allPoints = 0;
   int reachedPoints = 0;
+  int allCosts = 0;
+  int spentCosts = 0;
   double percent = 0.0;
 
   @override
@@ -47,15 +49,16 @@ class _PhaseItemState extends State<PhaseItem> {
     appState = StateWidget.of(context).state;
 
     return Card(
-        color: Colors.white,
-        elevation: 10.0,
-        child: Container(
+      color: Colors.white,
+      elevation: 10.0,
+      child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              stops: [percent, percent],
+              stops: [0.15, percent, percent],
               colors: [
+                Color(widget.snap.data['color']),
                 percent <= 0.5 ?  Color(0x33B71C1C) :
                 percent > 0.5 && percent <= 0.8 ? Color(0x44FFEB3B) :
                 Color(0x332E7D32),
@@ -71,8 +74,8 @@ class _PhaseItemState extends State<PhaseItem> {
                 leading: Stack(
                     children: <Widget>[
                       Container(
-                        width: 50.0,
-                        height: 50.0,
+                        width: 60.0,
+                        height: 60.0,
                         decoration: BoxDecoration(
                             color: Color(widget.snap.data['color']),
                             shape: BoxShape.circle
@@ -104,7 +107,7 @@ class _PhaseItemState extends State<PhaseItem> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 20.0,
+                          left: 50.0,
                           right: 20.0,
                           top: 5.0,
                           bottom: 5.0
@@ -149,7 +152,7 @@ class _PhaseItemState extends State<PhaseItem> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 20.0,
+                          left: 50.0,
                           right: 20.0,
                           top: 5.0,
                           bottom: 5.0
@@ -194,7 +197,52 @@ class _PhaseItemState extends State<PhaseItem> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 20.0,
+                          left: 50.0,
+                          right: 20.0,
+                          top: 5.0,
+                          bottom: 5.0
+                      ),
+                      child:Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RichText(
+                              text: TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                        child: Padding(
+                                            padding: EdgeInsets.only(right: 5.0),
+                                            child: Icon(
+                                              Icons.attach_money,
+                                              color: Colors.green,
+                                            )
+                                        )
+                                    ),
+                                    TextSpan(
+                                      style: TextStyle(
+                                        wordSpacing: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 16.0,
+                                      ),
+                                      text: "Costs:",
+                                    ),
+                                  ]
+                              )
+                          ),
+                          Text(
+                            spentCosts.toString() + "/" + allCosts.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 50.0,
                           right: 20.0,
                           top: 5.0,
                           bottom: 5.0
@@ -239,7 +287,7 @@ class _PhaseItemState extends State<PhaseItem> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: 20.0,
+                          left: 40.0,
                           right: 20.0,
                           top: 5.0,
                           bottom: 5.0
@@ -278,7 +326,7 @@ class _PhaseItemState extends State<PhaseItem> {
               ) : Container(),
             ],
           ),
-        )
+        ),
     );
   }
 
@@ -293,6 +341,8 @@ class _PhaseItemState extends State<PhaseItem> {
     int _doneTasks = 0;
     int _allPoints = 0;
     int _reachedPoints = 0;
+    int _allCosts = 0;
+    int _spentCosts = 0;
     double _percent = 0.0;
 
     if (widget.snap.data['tasks'] != null) {
@@ -305,9 +355,15 @@ class _PhaseItemState extends State<PhaseItem> {
             .get();
         if (querySnapshot.exists) {
           _allPoints += querySnapshot['points'];
+          if(querySnapshot['costs'] != null) {
+            _allCosts += querySnapshot['costs'];
+          }
           if(querySnapshot['done'] == true) {
             _doneTasks++;
             _reachedPoints += querySnapshot['points'];
+            if(querySnapshot['costs'] != null) {
+              _spentCosts += querySnapshot['costs'];
+            }
           }
         }
       }
@@ -320,6 +376,8 @@ class _PhaseItemState extends State<PhaseItem> {
         doneTasks = _doneTasks;
         allPoints = _allPoints;
         reachedPoints = _reachedPoints;
+        allCosts = _allCosts;
+        spentCosts = _spentCosts;
         percent = _percent;
       });
     }
@@ -339,6 +397,8 @@ class _PhaseItemState extends State<PhaseItem> {
       int _doneTasks = 0;
       int _allPoints = 0;
       int _reachedPoints = 0;
+      int _allCosts = 0;
+      int _spentCosts = 0;
 
       _tasks = new List<String>.from(snap.data['tasks']);
       for (String id in _tasks) {
@@ -348,9 +408,15 @@ class _PhaseItemState extends State<PhaseItem> {
             .get();
         if (querySnapshot.exists) {
           _allPoints += querySnapshot['points'];
+          if(querySnapshot['costs'] != null) {
+            _allCosts += querySnapshot['costs'];
+          }
           if(querySnapshot['done'] == true) {
             _doneTasks++;
             _reachedPoints += querySnapshot['points'];
+            if(querySnapshot['costs'] != null) {
+              _spentCosts += querySnapshot['costs'];
+            }
           }
         }
       }
@@ -363,6 +429,8 @@ class _PhaseItemState extends State<PhaseItem> {
           doneTasks = _doneTasks;
           allPoints = _allPoints;
           reachedPoints = _reachedPoints;
+          allCosts = _allCosts;
+          spentCosts = _spentCosts;
           percent = _percent;
         });
       }
