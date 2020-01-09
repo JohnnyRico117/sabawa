@@ -12,6 +12,7 @@ import 'package:sabawa/ui/screens/login.dart';
 //import 'package:sabawa/ui/screens/progress.dart';
 import 'package:sabawa/ui/screens/friend_list.dart';
 import 'package:sabawa/ui/screens/phases.dart';
+import 'package:sabawa/ui/screens/overview.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
 class SabawaTabController extends StatefulWidget {
@@ -23,11 +24,13 @@ class SabawaTabControllerState extends State<SabawaTabController> {
 
   StateModel appState;
   int _selectedIndex = 0;
+  Color _bottomNavBackGround = Colors.white;
 
   List<Widget> _widgetOptions = <Widget>[
-    Home(),
+    //Home(),
+    Overview(),
     Phases(),
-    ToDoList(),
+    //ToDoList(),
     FriendList(),
     Center(child: Icon(Icons.lightbulb_outline)),
   ];
@@ -66,27 +69,37 @@ class SabawaTabControllerState extends State<SabawaTabController> {
 
   Widget _buildBottomTabs() {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/profile'),
-          child: Container(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundImage: appState.user.photoUrl == null ? null : new NetworkImage(appState.user.photoUrl),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          elevation: 0.0,
+          //backgroundColor: Color(0xFF00ACC1),
+          leading: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/profile'),
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundImage: appState.user.photoUrl == null ? null : new NetworkImage(appState.user.photoUrl),
+                ),
+              )
+          ),
+          title: GestureDetector(
+            //child: Text(appState.currentProjectName),
+            child: Text(
+              "Project",
+              style: TextStyle(
+                color: Colors.white
+              ),
             ),
-          )
+            onTap: () => Navigator.pushNamed(context, '/projects'),
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () => Navigator.pushNamed(context, '/settings')
+            )
+          ],
         ),
-        title: GestureDetector(
-          //child: Text(appState.currentProjectName),
-          child: Text("Project"),
-          onTap: () => Navigator.pushNamed(context, '/projects'),
-        ),
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.settings), 
-              onPressed: () => Navigator.pushNamed(context, '/settings')
-          )
-        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -95,33 +108,33 @@ class SabawaTabControllerState extends State<SabawaTabController> {
         type: BottomNavigationBarType.shifting,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
+            backgroundColor: _bottomNavBackGround,
             icon: Icon(Icons.home),
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
+            backgroundColor: _bottomNavBackGround,
             icon: Icon(Icons.storage),
             title: Text('Phases'),
           ),
+//          BottomNavigationBarItem(
+//            backgroundColor: _bottomNavBackGround,
+//            icon: Icon(Icons.list),
+//            title: Text('To-Do'),
+//          ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.list),
-            title: Text('To-Do'),
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
+            backgroundColor: _bottomNavBackGround,
             icon: Icon(Icons.people),
             title: Text('Team'),
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
+            backgroundColor: _bottomNavBackGround,
             icon: Icon(Icons.chat),
             title: Text('Chat'),
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Color(0xFF0050a1),
         unselectedItemColor: Colors.black26,
         onTap: _onItemTapped,
       ),

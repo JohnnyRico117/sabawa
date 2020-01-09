@@ -218,7 +218,8 @@ class _AddTaskState extends State<AddTask> {
                   'costs': int.parse(_costs),
                   'phase': _phase,
                   'followUpPhase': _followUpPhase,
-                  'project': appState.currentProjectID
+                  'project': appState.currentProjectID,
+                  'owner': appState.currentUser.id
                 });
 
                 final DocumentReference postRef = Firestore.instance.collection('phases').document(_phase);

@@ -24,7 +24,7 @@ ThemeData buildTheme() {
 
   return base.copyWith(
     appBarTheme: AppBarTheme(
-      color: Colors.white,
+      color: Color(0xFF0050a1),
       textTheme: TextTheme(
         title: TextStyle(
           fontSize: 20.0,
@@ -50,5 +50,8 @@ ThemeData buildTheme() {
       color: const Color(0xFFCCC5AF),
       size: 20.0,
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Color(0xFF0050a1),
+    )
   );
 }
