@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,8 +19,9 @@ class ToDoHero extends StatefulWidget {
   final DocumentSnapshot snap;
   final Phase phase;
   final bool check;
+  final StreamController controller;
 
-  ToDoHero({ Key key, this.id, this.onTap, this.width, this.snap, this.phase, this.check }) : super(key: key);
+  ToDoHero({ Key key, this.id, this.onTap, this.width, this.snap, this.phase, this.check, this.controller }) : super(key: key);
 
   @override
   _ToDoHeroState createState() => _ToDoHeroState();
@@ -35,6 +38,36 @@ class _ToDoHeroState extends State<ToDoHero> {
 
   StateModel appState;
 
+  int _points;
+
+  @override
+  void initState() {
+    super.initState();
+    _points = widget.snap.data['points'];
+    if(widget.controller != null) {
+      widget.controller.stream.listen((data) {
+        // TODO: delete print
+        print("DataReceived: " + data.toString());
+        if(mounted) {
+          _setPoints(data);
+        }
+
+      }, onDone: () {
+        // TODO: delete print
+        print("Task Done");
+      }, onError: (error) {
+        // TODO: delete print
+        print("Some Error");
+      });
+    }
+  }
+
+  void _setPoints(data) {
+      setState(() {
+        _points = data;
+      });
+  }
+
 
   Widget build(BuildContext context) {
 
@@ -46,6 +79,8 @@ class _ToDoHeroState extends State<ToDoHero> {
     if (widget.snap.data['owner'] != null) {
       owner = widget.snap.data['owner'];
     }
+
+    _points = widget.snap.data['points'];
 
     final _biggerFont = TextStyle(
       fontSize: 18.0,
@@ -97,7 +132,7 @@ class _ToDoHeroState extends State<ToDoHero> {
                           top: 15.0,
                           child: Center(
                             child: Text(
-                              widget.snap.data['points'].toString(),
+                              _points.toString(),
                               style: TextStyle(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.bold,
@@ -260,6 +295,17 @@ class _ToDoHeroState extends State<ToDoHero> {
         ),
       ),
     );
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (widget.controller != null) {
+      // TODO maybe close
+      //widget.controller.close();
+    }
+
   }
 }
 

@@ -1,12 +1,11 @@
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
-import 'package:sabawa/utils/enums/card_types.dart';
 
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/model/phase.dart';
@@ -14,11 +13,9 @@ import 'package:sabawa/state_widget.dart';
 
 import 'package:sabawa/ui/widgets/todo_item.dart';
 
-import 'package:sabawa/ui/widgets/progress_card.dart';
-import 'package:sabawa/ui/widgets/profile_card.dart';
 import 'package:sabawa/ui/widgets/loading_indicator.dart';
 
-import 'package:sabawa/ui/screens/detail_todo.dart';
+import 'package:sabawa/ui/widgets/time_item_list.dart';
 
 import 'package:sabawa/ui/screens/add/add_task.dart';
 
@@ -30,212 +27,6 @@ class Overview extends StatefulWidget {
 
 class _OverviewState extends State<Overview> {
 
-//  StateModel appState;
-//  bool _missed = false;
-//  double _percent = 0.4;
-//  List<String> _phaseFilter = new List();
-//  List<Phase> _phases = new List();
-//
-//  List<DocumentSnapshot> _snaps = new List();
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    initData();
-//  }
-//
-//  @override
-//  Widget build(BuildContext context) {
-//
-//    appState = StateWidget.of(context).state;
-//
-//    if (_snaps.isEmpty) return LoadingIndicator();
-//
-//    return new Container(
-//        padding: const EdgeInsets.all(12),
-//        child: ListView(
-//          children: <Widget>[
-//            //ProfileCard(),
-//            _timeFrameSelection(),
-//            _selectedTasks(),
-////            !_missed ? Container() : ProgressCard(CardType.MISSED, _snaps),
-////            ProgressCard(CardType.DAILY, _snaps),
-////            ProgressCard(CardType.WEEKLY, _snaps),
-////            ProgressCard(CardType.MONTHLY, _snaps),
-////            ProgressCard(CardType.PROJECT, _snaps),
-//          ],
-//        )
-//    );
-//  }
-//
-//  void initData() async {
-//
-//    final prefs = await SharedPreferences.getInstance();
-//    String id = prefs.getString('projectID');
-//
-//    if (id != null) {
-//      bool _temp = false;
-//
-//      QuerySnapshot querysnaps = await Firestore.instance
-//          .collection('tasks')
-//          .where("project", isEqualTo: id)
-//          .getDocuments();
-//
-//      for (DocumentSnapshot snap in querysnaps.documents) {
-//        final double endDate = snap.data['enddate'].seconds / 3600 / 24;
-//        final double now = new Timestamp.now().seconds / 3600 / 24;
-//
-//        double diff = now - endDate;
-//
-//        if (diff < 0) {
-//          _temp = true;
-//          break;
-//        }
-//      }
-//
-//      if (mounted) {
-//        setState(() {
-//          _missed = _temp;
-//          _snaps = querysnaps.documents;
-//        });
-//      }
-//    }
-//  }
-//
-//  Widget _timeFrameSelection() {
-//    return Container(
-//      margin: EdgeInsets.symmetric(vertical: 20.0),
-//      height: 100.0,
-//      child: ListView(
-//        scrollDirection: Axis.horizontal,
-//        children: <Widget>[
-//          Padding(
-//            padding: EdgeInsets.symmetric(
-//              horizontal: 5.0
-//            ),
-//            child: Container(
-//                decoration: ShapeDecoration(
-//                  shape: RoundedRectangleBorder(
-//                    borderRadius: BorderRadius.circular(15.0),
-//                  ),
-//                  color: Colors.red,
-//                ),
-//                width: 80.0,
-//                child: Column(
-//                  children: <Widget>[
-//                    Padding(
-//                      padding: EdgeInsets.only(
-//                          top: 5.0
-//                      ),
-//                      child: Text(
-//                        "MON",
-//                        style: TextStyle(
-//                            fontSize: 14.0,
-//                            fontWeight: FontWeight.bold
-//                        ),
-//                      ),
-//                    ),
-//                    Padding(
-//                      padding: EdgeInsets.only(
-//                          bottom: 5.0
-//                      ),
-//                      child: Text(
-//                        "22",
-//                        style: TextStyle(
-//                          fontSize: 20.0,
-//                        ),
-//
-//                      ),
-//                    ),
-//
-//                    CircularPercentIndicator(
-//                      progressColor: Colors.green,
-//                      radius: 40.0,
-//                      percent: _percent,
-//                      lineWidth: 5.0,
-//                      center: Text((_percent * 100).round().toString() + "%",
-//                        style: TextStyle(
-//                            fontWeight: FontWeight.bold,
-//                            fontSize: 12.0
-//                        ),
-//                      ),
-//                    ),
-//                  ],
-//                )
-//            ),
-//          ),
-//          Container(
-//            width: 90.0,
-//            color: Colors.blue,
-//          ),
-//          Container(
-//            width: 90.0,
-//            color: Colors.green,
-//          ),
-//          Container(
-//            width: 90.0,
-//            color: Colors.yellow,
-//          ),
-//          Container(
-//            width: 90.0,
-//            color: Colors.orange,
-//          ),
-//        ],
-//      ),
-//    );
-//  }
-//
-//  Widget _selectedTasks() {
-//    return Expanded(
-//      child: new StreamBuilder(
-//        stream: Firestore.instance.collection('tasks').where("project", isEqualTo: appState.currentProjectID).snapshots(),
-//        builder: (BuildContext context,
-//            AsyncSnapshot<QuerySnapshot> snapshot) {
-//          if (!snapshot.hasData) return LoadingIndicator();
-//
-////          switch(_sortBy) {
-////            case 'Alphabet':
-////              snapshot.data.documents.sort((a, b) => a['task'].toString().toLowerCase().compareTo(b['task'].toString().toLowerCase()));
-////              break;
-////            case 'Points':
-////              snapshot.data.documents.sort((a, b) => a['points'].compareTo(b['points']));
-////              break;
-////            case 'Date':
-////              snapshot.data.documents.sort((a, b) => a['enddate'].toString().compareTo(b['enddate'].toString()));
-////              break;
-////            default:
-////              snapshot.data.documents.sort((a, b) => a['task'].toString().compareTo(b['task'].toString()));
-////              break;
-////          }
-//
-//          if (_phaseFilter.isEmpty) {
-//            return new ListView(
-//              children: snapshot.data.documents
-//                  .map((document) {
-//                Phase pha;
-//                Iterable<Phase> ps = _phases.where((p) => p.id == document.data['phase']);
-//                if (ps.isNotEmpty) {
-//                  pha = ps.first;
-//                }
-//                return ToDoItem(document, pha);
-//              }).toList(),
-//            );
-//          } else {
-//            return new ListView(
-//              children: snapshot.data.documents
-//                  .where((d) => _phaseFilter.contains(d.data['phase']))
-//                  .map((document) {
-//                Phase pha = _phases.where((p) => p.id == document.data['phase']).first;
-//                return ToDoItem(document, pha);
-//              }).toList(),
-//            );
-//          }
-//        },
-//      ),
-//    );
-//  }
-
-
   StateModel appState;
 
   Sort _sortBy;
@@ -244,20 +35,34 @@ class _OverviewState extends State<Overview> {
   List<Phase> _phases = new List();
   Wrap _checkBoxWrap = new Wrap();
   bool _expanded = false;
+  bool deadlines = false;
+
+  DateTime now = new DateTime.now();
+  DateTime lastMidnight;
+
+  int chosenDay = 0;
   double _percent = 0.4;
 
   Color _horizontalItemsColor = Color(0xFF002972);
   //Color _horizontalItemsColor = Colors.red;
   Color _horizontalUnselectedText = Color(0xFF0050a1);
 
+
+  DateTime _date = new DateTime.now();
+
   @override
   void initState() {
     super.initState();
     initPhases();
+    //initDeadlineBool();
+
+    lastMidnight = new DateTime(now.year, now.month, now.day);
+
 //    _dropDownMenuItems = getDropDownMenuItems();
 //    _sortBy = _dropDownMenuItems[0].value;
   }
 
+  // TODO dropdown für tage und wochen
 //  List _sortType = ['Alphabet', 'Date', 'Points'];
 //  List<DropdownMenuItem<String>> _dropDownMenuItems;
 //
@@ -378,16 +183,26 @@ class _OverviewState extends State<Overview> {
                         break;
                     }
 
+
+                    //DateTime date = new DateTime.fromMillisecondsSinceEpoch(document.data["enddate"].seconds * 1000);
+                    //print(date.difference(lastMidnight).inDays.toString());
+
+
                     if (_phaseFilter.isEmpty) {
                       return new ListView(
                         children: snapshot.data.documents
                             .where((d) => d.data["status"] != 2)
+                            .where((d) =>
+                              chosenDay == 0
+                                  ? DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays <= chosenDay
+                                  : DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays == chosenDay)
                             .map((document) {
                           Phase pha;
                           Iterable<Phase> ps = _phases.where((p) => p.id == document.data['phase']);
                           if (ps.isNotEmpty) {
                             pha = ps.first;
                           }
+
                           return ToDoItem(document, pha);
                         }).toList(),
                       );
@@ -670,332 +485,42 @@ class _OverviewState extends State<Overview> {
     });
   }
 
+  void initDeadlineBool() async {
+
+    final prefs = await SharedPreferences.getInstance();
+
+    QuerySnapshot querySnaps = await Firestore.instance
+        .collection('tasks')
+        .where("project", isEqualTo: prefs.getString('projectID'))
+        .getDocuments();
+
+    List<DocumentSnapshot> snaps = querySnaps.documents;
+
+    for (int i = 0; i < snaps.length; i++) {
+      if (DateTime.fromMillisecondsSinceEpoch(snaps[i].data["enddate"].seconds * 1000).difference(lastMidnight).inDays < 0) {
+        setState(() {
+          deadlines = true;
+        });
+        break;
+      }
+    }
+
+  }
+
   Widget _timeFrameSelection() {
     return Container(
         margin: EdgeInsets.only(
           bottom: 20.0,
         ),
         height: 65.0,
-        child: ListView(
-          padding: EdgeInsets.only(
-              left: 15.0
-          ),
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.0
-              ),
-              child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: Colors.white,
-                  ),
-                  width: 100.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 5.0
-                            ),
-                            child: Text(
-                              "MON",
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 5.0
-                            ),
-                            child: Text(
-                              "22",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
+        child: new TimeItemList(
+          onSelected: (value) {
+            setState(() {
+              chosenDay = value;
+            });
 
-                            ),
-                          ),
-                        ],
-                      ),
-                      CircularPercentIndicator(
-                        progressColor: Colors.green,
-                        radius: 40.0,
-                        percent: _percent,
-                        lineWidth: 5.0,
-                        center: Text((_percent * 100).round().toString() + "%",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  )
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.0
-              ),
-              child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: _horizontalItemsColor,
-                  ),
-                  width: 60.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 5.0
-                            ),
-                            child: Text(
-                              "TUE",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 5.0
-                            ),
-                            child: Text(
-                              "23",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-//                    CircularPercentIndicator(
-//                      progressColor: Colors.green,
-//                      radius: 40.0,
-//                      percent: _percent,
-//                      lineWidth: 5.0,
-//                      center: Text((_percent * 100).round().toString() + "%",
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 12.0,
-//                          color: _horizontalUnselectedText,
-//                        ),
-//                      ),
-//                    ),
-                    ],
-                  )
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.0
-              ),
-              child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: _horizontalItemsColor,
-                  ),
-                  width: 60.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 5.0
-                            ),
-                            child: Text(
-                              "WED",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 5.0
-                            ),
-                            child: Text(
-                              "24",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: _horizontalUnselectedText,
-                              ),
-
-                            ),
-                          ),
-                        ],
-                      ),
-//                    CircularPercentIndicator(
-//                      progressColor: Colors.green,
-//                      radius: 40.0,
-//                      percent: _percent,
-//                      lineWidth: 5.0,
-//                      center: Text((_percent * 100).round().toString() + "%",
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 12.0,
-//                          color: _horizontalUnselectedText,
-//                        ),
-//                      ),
-//                    ),
-                    ],
-                  )
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.0
-              ),
-              child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: _horizontalItemsColor,
-                  ),
-                  width: 60.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 5.0
-                            ),
-                            child: Text(
-                              "THU",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 5.0
-                            ),
-                            child: Text(
-                              "25",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: _horizontalUnselectedText,
-                              ),
-
-                            ),
-                          ),
-                        ],
-                      ),
-//                    CircularPercentIndicator(
-//                      progressColor: Colors.green,
-//                      radius: 40.0,
-//                      percent: _percent,
-//                      lineWidth: 5.0,
-//                      center: Text((_percent * 100).round().toString() + "%",
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 12.0,
-//                          color: _horizontalUnselectedText,
-//                        ),
-//                      ),
-//                    ),
-                    ],
-                  )
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 5.0
-              ),
-              child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: _horizontalItemsColor,
-                  ),
-                  width: 60.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: 5.0
-                            ),
-                            child: Text(
-                              "FRI",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 5.0
-                            ),
-                            child: Text(
-                              "26",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: _horizontalUnselectedText,
-                              ),
-                            ),
-                          ),
-
-
-                        ],
-                      ),
-//                    CircularPercentIndicator(
-//                      progressColor: Colors.green,
-//                      radius: 40.0,
-//                      percent: _percent,
-//                      lineWidth: 5.0,
-//                      center: Text((_percent * 100).round().toString() + "%",
-//                        style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 12.0,
-//                          color: _horizontalUnselectedText,
-//                        ),
-//                      ),
-//                    ),
-                    ],
-                  )
-              ),
-            ),
-          ],
+            print("Count was selected: " +  value.toString());
+          },
         ),
     );
   }

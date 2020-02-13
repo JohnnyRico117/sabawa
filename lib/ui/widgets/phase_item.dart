@@ -33,8 +33,8 @@ class _PhaseItemState extends State<PhaseItem> {
   int doneTasks = 0;
   int allPoints = 0;
   int reachedPoints = 0;
-  int allCosts = 0;
-  int spentCosts = 0;
+  double allCosts = 0;
+  double spentCosts = 0;
   double percent = 0.0;
 
   @override
@@ -341,8 +341,8 @@ class _PhaseItemState extends State<PhaseItem> {
     int _doneTasks = 0;
     int _allPoints = 0;
     int _reachedPoints = 0;
-    int _allCosts = 0;
-    int _spentCosts = 0;
+    double _allCosts = 0;
+    double _spentCosts = 0;
     double _percent = 0.0;
 
     if (widget.snap.data['tasks'] != null) {
@@ -356,13 +356,13 @@ class _PhaseItemState extends State<PhaseItem> {
         if (querySnapshot.exists) {
           _allPoints += querySnapshot['points'];
           if(querySnapshot['costs'] != null) {
-            _allCosts += querySnapshot['costs'];
+            _allCosts += querySnapshot['costs'].toDouble();
           }
           if(querySnapshot['done'] == true) {
             _doneTasks++;
             _reachedPoints += querySnapshot['points'];
             if(querySnapshot['costs'] != null) {
-              _spentCosts += querySnapshot['costs'];
+              _spentCosts += querySnapshot['costs'].toDouble();
             }
           }
         }
@@ -397,8 +397,8 @@ class _PhaseItemState extends State<PhaseItem> {
       int _doneTasks = 0;
       int _allPoints = 0;
       int _reachedPoints = 0;
-      int _allCosts = 0;
-      int _spentCosts = 0;
+      double _allCosts = 0;
+      double _spentCosts = 0;
 
       _tasks = new List<String>.from(snap.data['tasks']);
       for (String id in _tasks) {
@@ -409,13 +409,13 @@ class _PhaseItemState extends State<PhaseItem> {
         if (querySnapshot.exists) {
           _allPoints += querySnapshot['points'];
           if(querySnapshot['costs'] != null) {
-            _allCosts += querySnapshot['costs'];
+            _allCosts += querySnapshot['costs'].toDouble();
           }
           if(querySnapshot['done'] == true) {
             _doneTasks++;
             _reachedPoints += querySnapshot['points'];
             if(querySnapshot['costs'] != null) {
-              _spentCosts += querySnapshot['costs'];
+              _spentCosts += querySnapshot['costs'].toDouble();
             }
           }
         }
