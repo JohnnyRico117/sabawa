@@ -20,17 +20,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore: ^0.13.0+1
+  cloud_firestore: ^0.13.2+1
   cupertino_icons: ^0.1.2
-  firebase_auth: ^0.14.0+9
-  firebase_database: ^3.0.9
-  firebase_storage: ^3.0.8
+  firebase_auth: ^0.15.4
+  firebase_database: ^3.1.1
+  firebase_storage: ^3.1.1
   flutter_material_color_picker: ^1.0.5
   flutter_speed_dial: ^1.2.5
-  google_sign_in: ^4.0.13
+  google_sign_in: ^4.1.1
   intl: ^0.16.0
   percent_indicator: ^2.1.1+1
-  shared_preferences: ^0.5.4+5
+  shared_preferences: ^0.5.6+1
   url_launcher: ^5.4.1
 
 dev_dependencies:

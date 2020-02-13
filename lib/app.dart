@@ -7,6 +7,7 @@ import 'package:sabawa/ui/screens/profile.dart';
 import 'package:sabawa/ui/screens/projects.dart';
 import 'package:sabawa/ui/screens/settings.dart';
 import 'package:sabawa/ui/screens/overview.dart';
+import 'package:sabawa/ui/screens/shopping_mall.dart';
 import 'package:sabawa/controller/tab_controller.dart';
 
 class SabawaApp extends StatelessWidget {
@@ -25,6 +26,7 @@ class SabawaApp extends StatelessWidget {
         '/friends': (context) => FriendList(),
         '/projects': (context) => Projects(),
         '/overview': (context) => Overview(),
+        '/shop': (context) => Shop(),
       },
     );
   }
