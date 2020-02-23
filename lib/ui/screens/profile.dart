@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/state_widget.dart';
@@ -9,101 +10,249 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   StateModel appState;
+
+
 
   @override
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appState.user.displayName),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            _buildAvatar(),
-            _buildUserInfo(),
-            _buildButtons(),
+        appBar: AppBar(
+          backgroundColor: Color(0xff310818),
+          title: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                child: Image.asset("assets/nav/star.png",
+                  width: 25.0,
+                ),
+              ),
+              Text(
+                "20000",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: Color(0xffffffff),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 25.0, right: 5.0),
+                child: Image.asset("assets/nav/gold.png",
+                  width: 25.0,
+                ),
+              ),
+              Text(
+                "4000",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: Color(0xffffffff),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 25.0, right: 5.0),
+                child: Image.asset("assets/goal.png",
+                  width: 25.0,
+                ),
+              ),
+              Text(
+                "1",
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: Color(0xffffffff),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+          //title: Text(appState.user.displayName),
+        ),
+        body: Container(
+          width: double.maxFinite,
+          decoration: new BoxDecoration(
+            color: Color(0xff310818),
+          ),
+          child: Column(
+            children: <Widget>[
+              _buildAvatar(),
+              _neonText("EKATERINA", Color(0xffff3988), 39.0),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+              ),
+              _neonSign("FRIENDS", Color(0xff026af4), Icons.people_outline),
+              _neonSign("FRIENDS", Color(0xfffbeb10), Icons.favorite_border),
+              _neonSign("FRIENDS", Color(0xff5fef5f), Icons.settings),
+
+
+              //_buildAvatar(),
+              //_buildUserInfo(),
+              //_buildButtons(),
+            ],
+          ),
+        ));
+  }
+
+  Widget _neonSign(String text, Color color, IconData icon) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.0),
+      child:  Container(
+        width: 304,
+        height: 60,
+        decoration: new BoxDecoration(
+          border: Border.all(color: color, width: 3),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: color,
+              offset: Offset(0, 0),
+              blurRadius: 15,
+              spreadRadius: 5,
+            ),
           ],
         ),
+        child: Container(
+          margin: EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xff310818),
+                offset: Offset(0, 0),
+                blurRadius: 15,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _neonText(text, color, 34),
+                Stack(
+                  //fit: StackFit.expand,
+                  children: <Widget>[
+                    Center(
+                      child: Icon(icon, size: 50, color: color ),
+                    ),
+                    Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10.0),
+                          child: Icon(icon, size: 30, color: color ),
+                        )
+                    ),
+                    Center(
+                      child: ClipRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                            sigmaX: 4.0,
+                            sigmaY: 4.0,
+                          ),
+                          child: Container(
+
+                              alignment: Alignment.center,
+                              width: 50.0,
+                              height: 50.0,
+                              child: Center(
+                                child: Icon(icon, size: 40, color: color.withOpacity(0.6) ),
+                              )
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),),
       )
     );
   }
 
   Widget _buildAvatar() {
     return Padding(
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.only(bottom: 20.0),
       child: CircleAvatar(
-        backgroundImage: new NetworkImage(appState.user.photoUrl),
+        backgroundImage: AssetImage("assets/avatar.png"),
+        //backgroundImage: new NetworkImage(appState.user.photoUrl),
         radius: 50.0,
       ),
     );
   }
 
+
+  Widget _neonText(String text, Color color, double fontSize) {
+    return Stack(
+      children: <Widget>[
+        Text(
+          text,
+          style: TextStyle(
+            fontFamily: 'Beon',
+            color: color.withOpacity(0.1),
+            fontSize: fontSize,
+            fontWeight: FontWeight.w900,
+            fontStyle: FontStyle.normal,
+            shadows: [
+              BoxShadow(
+                  color: color,
+                  offset: Offset(0, 0),
+                  blurRadius: 15,
+                  spreadRadius: 0),
+            ],
+          ),
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontFamily: 'Beon',
+            color: color,
+            fontSize: fontSize,
+            fontWeight: FontWeight.w500,
+            fontStyle: FontStyle.normal,
+            shadows: [
+              BoxShadow(
+                color: color,
+                offset: Offset(0, 0),
+                blurRadius: 9,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildUserInfo() {
     return new Container(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: Text(
-                            appState.user.displayName.split(" ").first,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0
-                            )
-                        )
-                    ),
-//                    Container(
-//                      padding: const EdgeInsets.all(12),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          Icon(Icons.star, color: Colors.yellow),
-//                          Container(
-//                              padding: const EdgeInsets.only(left: 8),
-//                              child: Text(
-//                                appState.currentUser.points.toString(),
-//                                style: TextStyle(
-//                                  fontWeight: FontWeight.bold,
-//                                  fontSize: 20.0
-//                                ),
-//                              )
-//                          )
-//                        ],
-//                      ),
-//                    ),
-//                    Container(
-//                      padding: const EdgeInsets.all(12),
-//                      child: Row(
-//                        mainAxisAlignment: MainAxisAlignment.center,
-//                        children: <Widget>[
-//                          Icon(Icons.people, color: Colors.blue),
-//                          Container(
-//                              padding: const EdgeInsets.only(left: 8),
-//                              child: Text(
-//                                appState.currentUser.friends.length.toString(),
-//                                style: TextStyle(
-//                                    fontWeight: FontWeight.bold,
-//                                    fontSize: 20.0
-//                                ),
-//                              )
-//                          )
-//                        ],
-//                      ),
-//                    ),
-                  ],
-                )
-            )
-          ],
-        )
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: Text(
+                    appState.user.displayName.split(" ").first,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -127,11 +276,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "200",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
-
                   ],
                 ),
                 shape: new CircleBorder(),
@@ -154,11 +300,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "200",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
-
                   ],
                 ),
                 shape: new CircleBorder(),
@@ -181,11 +324,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "200",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 20.0),
                     ),
-
                   ],
                 ),
                 shape: new CircleBorder(),
@@ -213,11 +353,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "Projects",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 15.0),
                     ),
-
                   ],
                 ),
                 shape: new CircleBorder(),
@@ -240,11 +377,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "Calender",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0
-                      ),
+                          fontWeight: FontWeight.bold, fontSize: 15.0),
                     ),
-
                   ],
                 ),
                 shape: new CircleBorder(),
@@ -266,24 +400,22 @@ class _ProfileState extends State<Profile> {
         child: Container(
           decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
           child: ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: 20.0, vertical: 0.1),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.1),
               leading: Icon(icon, color: Colors.white),
               title: Text(
                 title,
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
-              trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
-          ),
+              trailing: Icon(Icons.keyboard_arrow_right,
+                  color: Colors.white, size: 30.0)),
         ),
       );
     }
 
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, route),
-      child: _buildCard()
+        onTap: () => Navigator.pushNamed(context, route), child: _buildCard()
 //      child: Padding(
 //        padding: EdgeInsets.symmetric(horizontal: 3.0),
 //        child: Card(
@@ -296,7 +428,6 @@ class _ProfileState extends State<Profile> {
 //          ),
 //        ),
 //      ),
-    );
+        );
   }
-
 }

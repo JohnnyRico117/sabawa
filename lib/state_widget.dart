@@ -65,7 +65,8 @@ class _StateWidgetState extends State<StateWidget> {
   void initProject() async {
     print("Init Project");
     final prefs = await SharedPreferences.getInstance();
-    final projectID = prefs.getString('projectID') ?? "";
+    // TODO: delete ID
+    final projectID = prefs.getString('projectID') ?? "6veok0HKtwPc4PfQFGRV";
 
     print("ProjectID: " + projectID);
 

@@ -12,7 +12,6 @@ import 'package:sabawa/ui/widgets/loading_indicator.dart';
 import 'package:sabawa/ui/screens/add/add_task.dart';
 
 class ToDoList extends StatefulWidget {
-
   @override
   _ToDoListState createState() => _ToDoListState();
 }
@@ -40,10 +39,7 @@ class _ToDoListState extends State<ToDoList> {
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
     for (String sort in _sortType) {
-      items.add(new DropdownMenuItem(
-          value: sort,
-          child: new Text(sort)
-      ));
+      items.add(new DropdownMenuItem(value: sort, child: new Text(sort)));
     }
     return items;
   }
@@ -58,85 +54,117 @@ class _ToDoListState extends State<ToDoList> {
 
   @override
   Widget build(BuildContext context) {
-
     appState = StateWidget.of(context).state;
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5.0),
-        child: Column(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: new_todo()),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddTask("", appState.currentProjectID)),
+            );
+          },
+          child: Icon(Icons.add)),
+    );
+  }
+
+  Widget new_todo() {
+    return Center(
+      child: Text("HELLO"),
+    );
+  }
+
+  Widget old_todo() {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Sort by: "),
-                Padding(
-                  padding: EdgeInsets.only(right: 10.0),
-                  child: DropdownButton(
-                      value: _sortBy,
-                      items: _dropDownMenuItems,
-                      onChanged: changedDropDownItem
-                  ),
-                ),
-                Text("Filter by:"),
-                IconButton(
-                  icon: _expanded ? Icon(Icons.arrow_drop_up, color: Colors.black54) : Icon(Icons.arrow_drop_down, color: Colors.black54),
-                  onPressed: () {
-                    setState(() {
-                      _expanded = !_expanded;
-                    });
-                  },
-                ),
-              ],
+            Text("Sort by: "),
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: DropdownButton(
+                  value: _sortBy,
+                  items: _dropDownMenuItems,
+                  onChanged: changedDropDownItem),
             ),
-            _expanded ? _checkBoxWrap : Container(),
-            Expanded(
-              child: new StreamBuilder(
-                stream: Firestore.instance.collection('tasks').where("project", isEqualTo: appState.currentProjectID).snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return LoadingIndicator();
-
-                  switch(_sortBy) {
-                    case 'Alphabet':
-                      snapshot.data.documents.sort((a, b) => a['task'].toString().toLowerCase().compareTo(b['task'].toString().toLowerCase()));
-                      break;
-                    case 'Points':
-                      snapshot.data.documents.sort((a, b) => a['points'].compareTo(b['points']));
-                      break;
-                    case 'Date':
-                      snapshot.data.documents.sort((a, b) => a['enddate'].toString().compareTo(b['enddate'].toString()));
-                      break;
-                    default:
-                      snapshot.data.documents.sort((a, b) => a['task'].toString().compareTo(b['task'].toString()));
-                      break;
-                  }
-
-                  if (_phaseFilter.isEmpty) {
-                    return new ListView(
-                      children: snapshot.data.documents
-                          .map((document) {
-                        Phase pha;
-                        Iterable<Phase> ps = _phases.where((p) => p.id == document.data['phase']);
-                        if (ps.isNotEmpty) {
-                          pha = ps.first;
-                        }
-                        return ToDoItem(document, pha);
-                      }).toList(),
-                    );
-                  } else {
-                    return new ListView(
-                      children: snapshot.data.documents
-                          .where((d) => _phaseFilter.contains(d.data['phase']))
-                          .map((document) {
-                        Phase pha = _phases.where((p) => p.id == document.data['phase']).first;
-                        return ToDoItem(document, pha);
-                      }).toList(),
-                    );
-                  }
-                },
-              ),
+            Text("Filter by:"),
+            IconButton(
+              icon: _expanded
+                  ? Icon(Icons.arrow_drop_up, color: Colors.black54)
+                  : Icon(Icons.arrow_drop_down, color: Colors.black54),
+              onPressed: () {
+                setState(() {
+                  _expanded = !_expanded;
+                });
+              },
             ),
+          ],
+        ),
+        _expanded ? _checkBoxWrap : Container(),
+        Expanded(
+          child: new StreamBuilder(
+            stream: Firestore.instance
+                .collection('tasks')
+                .where("project", isEqualTo: appState.currentProjectID)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) return LoadingIndicator();
+
+              switch (_sortBy) {
+                case 'Alphabet':
+                  snapshot.data.documents.sort((a, b) => a['task']
+                      .toString()
+                      .toLowerCase()
+                      .compareTo(b['task'].toString().toLowerCase()));
+                  break;
+                case 'Points':
+                  snapshot.data.documents
+                      .sort((a, b) => a['points'].compareTo(b['points']));
+                  break;
+                case 'Date':
+                  snapshot.data.documents.sort((a, b) => a['enddate']
+                      .toString()
+                      .compareTo(b['enddate'].toString()));
+                  break;
+                default:
+                  snapshot.data.documents.sort((a, b) =>
+                      a['task'].toString().compareTo(b['task'].toString()));
+                  break;
+              }
+
+              if (_phaseFilter.isEmpty) {
+                return new ListView(
+                  children: snapshot.data.documents.map((document) {
+                    Phase pha;
+                    Iterable<Phase> ps =
+                        _phases.where((p) => p.id == document.data['phase']);
+                    if (ps.isNotEmpty) {
+                      pha = ps.first;
+                    }
+                    return ToDoItem(document, pha);
+                  }).toList(),
+                );
+              } else {
+                return new ListView(
+                  children: snapshot.data.documents
+                      .where((d) => _phaseFilter.contains(d.data['phase']))
+                      .map((document) {
+                    Phase pha = _phases
+                        .where((p) => p.id == document.data['phase'])
+                        .first;
+                    return ToDoItem(document, pha);
+                  }).toList(),
+                );
+              }
+            },
+          ),
+        ),
 //            ListTile(
 //              leading: new FloatingActionButton(
 //                  onPressed: () {
@@ -148,22 +176,11 @@ class _ToDoListState extends State<ToDoList> {
 //              ),
 //              title: new Text("New task"),
 //            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AddTask("", appState.currentProjectID)),
-            );
-          },
-          child: Icon(Icons.add)
-      ),
+      ],
     );
   }
 
   void initPhases() async {
-
     List<Phase> _ph = new List();
     final prefs = await SharedPreferences.getInstance();
 
@@ -188,24 +205,21 @@ class _ToDoListState extends State<ToDoList> {
 
   void initCheckBoxes(List<Phase> phases) {
     List<Widget> list = new List<Widget>();
-    for(var i = 0; i < phases.length; i++){
-      list.add(
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 20.0, right: 10.0),
-              child: Container(
-                width: 20.0,
-                height: 20.0,
-                decoration: BoxDecoration(
-                    color: Color(_phases[i].color),
-                    shape: BoxShape.circle
-                ),
-              ),
+    for (var i = 0; i < phases.length; i++) {
+      list.add(Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 20.0, right: 10.0),
+            child: Container(
+              width: 20.0,
+              height: 20.0,
+              decoration: BoxDecoration(
+                  color: Color(_phases[i].color), shape: BoxShape.circle),
             ),
-            Text(_phases[i].name),
-            Checkbox(
+          ),
+          Text(_phases[i].name),
+          Checkbox(
               value: _phaseFilter.contains(phases[i].id),
               onChanged: (bool value) {
                 //if (this.mounted) {
@@ -221,11 +235,9 @@ class _ToDoListState extends State<ToDoList> {
                   });
                 }
                 //}
-              }
-            ),
-          ],
-        )
-      );
+              }),
+        ],
+      ));
     }
     setState(() {
       _checkBoxWrap = Wrap(children: list);
