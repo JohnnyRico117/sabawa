@@ -193,9 +193,9 @@ class _OverviewState extends State<Overview> {
                         children: snapshot.data.documents
                             .where((d) => d.data["status"] != 2)
                             .where((d) =>
-                              chosenDay == 0
-                                  ? DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays <= chosenDay
-                                  : DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays == chosenDay)
+                        chosenDay == 0
+                            ? DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays <= chosenDay
+                            : DateTime.fromMillisecondsSinceEpoch(d.data["enddate"].seconds * 1000).difference(lastMidnight).inDays == chosenDay)
                             .map((document) {
                           Phase pha;
                           Iterable<Phase> ps = _phases.where((p) => p.id == document.data['phase']);
@@ -294,11 +294,11 @@ class _OverviewState extends State<Overview> {
             backgroundColor: Colors.green,
             label: 'Add',
             labelStyle: TextStyle(fontSize: 18.0),
-            onTap: () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddTask("", appState.currentProjectID)),
-              );
-            },
+//            onTap: () {
+//              Navigator.push(context,
+//                MaterialPageRoute(builder: (context) => AddTask("", appState.currentProjectID)),
+//              );
+//            },
           ),
           _sort ? SpeedDialChild(
             child: Icon(Icons.star),
@@ -509,19 +509,19 @@ class _OverviewState extends State<Overview> {
 
   Widget _timeFrameSelection() {
     return Container(
-        margin: EdgeInsets.only(
-          bottom: 20.0,
-        ),
-        height: 65.0,
-        child: new TimeItemList(
-          onSelected: (value) {
-            setState(() {
-              chosenDay = value;
-            });
+      margin: EdgeInsets.only(
+        bottom: 20.0,
+      ),
+      height: 65.0,
+      child: new TimeItemList(
+        onSelected: (value) {
+          setState(() {
+            chosenDay = value;
+          });
 
-            print("Count was selected: " +  value.toString());
-          },
-        ),
+          print("Count was selected: " +  value.toString());
+        },
+      ),
     );
   }
 

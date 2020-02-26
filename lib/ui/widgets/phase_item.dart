@@ -52,281 +52,281 @@ class _PhaseItemState extends State<PhaseItem> {
       color: Colors.white,
       elevation: 10.0,
       child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: [0.15, percent, percent],
-              colors: [
-                Color(widget.snap.data['color']),
-                percent <= 0.5 ?  Color(0x33B71C1C) :
-                percent > 0.5 && percent <= 0.8 ? Color(0x44FFEB3B) :
-                Color(0x332E7D32),
-                Colors.white
-              ],
-            ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            stops: [0.15, percent, percent],
+            colors: [
+              Color(widget.snap.data['color']),
+              percent <= 0.5 ?  Color(0x33B71C1C) :
+              percent > 0.5 && percent <= 0.8 ? Color(0x44FFEB3B) :
+              Color(0x332E7D32),
+              Colors.white
+            ],
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            //mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              ListTile(
-                leading: Stack(
-                    children: <Widget>[
-                      Container(
-                        width: 60.0,
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                            color: Color(widget.snap.data['color']),
-                            shape: BoxShape.circle
-                        ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          //mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            ListTile(
+              leading: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                          color: Color(widget.snap.data['color']),
+                          shape: BoxShape.circle
                       ),
+                    ),
 //                      Positioned.fill(
 //                          child: Center(
 //                            child: Text(points.toString(), style: _boldFont),
 //                          )
 //                      )
-                    ]
-                ),
-                title: Text(
-                    widget.snap.data['name'],
-                    style: _biggerFont
-                ),
-                trailing: IconButton(
-                    icon: Icon(expand ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
-                    onPressed: () {
-                      setState(() {
-                        expand = !expand;
-                      });
-                    }
-                ),
+                  ]
               ),
-              expand ? Container(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 50.0,
-                          right: 20.0,
-                          top: 5.0,
-                          bottom: 5.0
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          RichText(
-                              text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                        child: Padding(
-                                            padding: EdgeInsets.only(right: 5.0),
-                                            child: Icon(
-                                              Icons.assignment,
-                                              color: Colors.blue,
-                                            )
-                                        )
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        wordSpacing: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                      text: "Tasks:",
-                                    ),
-                                  ]
-                              )
-                          ),
-                          Text(
-                            doneTasks.toString() + "/" + allTasks.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+              title: Text(
+                  widget.snap.data['name'],
+                  style: _biggerFont
+              ),
+              trailing: IconButton(
+                  icon: Icon(expand ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down),
+                  onPressed: () {
+                    setState(() {
+                      expand = !expand;
+                    });
+                  }
+              ),
+            ),
+            expand ? Container(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 50.0,
+                        right: 20.0,
+                        top: 5.0,
+                        bottom: 5.0
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 50.0,
-                          right: 20.0,
-                          top: 5.0,
-                          bottom: 5.0
-                      ),
-                      child:Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          RichText(
-                              text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                        child: Padding(
-                                            padding: EdgeInsets.only(right: 5.0),
-                                            child: Icon(
-                                              Icons.star,
-                                              color: Colors.yellow,
-                                            )
-                                        )
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RichText(
+                            text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      child: Padding(
+                                          padding: EdgeInsets.only(right: 5.0),
+                                          child: Icon(
+                                            Icons.assignment,
+                                            color: Colors.blue,
+                                          )
+                                      )
+                                  ),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      wordSpacing: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
                                     ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        wordSpacing: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                      text: "Points:",
-                                    ),
-                                  ]
-                              )
+                                    text: "Tasks:",
+                                  ),
+                                ]
+                            )
+                        ),
+                        Text(
+                          doneTasks.toString() + "/" + allTasks.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16.0,
                           ),
-                          Text(
-                            reachedPoints.toString() + "/" + allPoints.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 50.0,
-                          right: 20.0,
-                          top: 5.0,
-                          bottom: 5.0
-                      ),
-                      child:Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          RichText(
-                              text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                        child: Padding(
-                                            padding: EdgeInsets.only(right: 5.0),
-                                            child: Icon(
-                                              Icons.attach_money,
-                                              color: Colors.green,
-                                            )
-                                        )
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        wordSpacing: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                      text: "Costs:",
-                                    ),
-                                  ]
-                              )
-                          ),
-                          Text(
-                            spentCosts.toString() + "/" + allCosts.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 50.0,
+                        right: 20.0,
+                        top: 5.0,
+                        bottom: 5.0
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 50.0,
-                          right: 20.0,
-                          top: 5.0,
-                          bottom: 5.0
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          RichText(
-                              text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                        child: Padding(
-                                            padding: EdgeInsets.only(right: 5.0),
-                                            child: Icon(
-                                              Icons.timer,
-                                              color: Colors.red,
-                                            )
-                                        )
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RichText(
+                            text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      child: Padding(
+                                          padding: EdgeInsets.only(right: 5.0),
+                                          child: Icon(
+                                            Icons.star,
+                                            color: Colors.yellow,
+                                          )
+                                      )
+                                  ),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      wordSpacing: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
                                     ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                        wordSpacing: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 16.0,
-                                      ),
-                                      text: "Deadline:",
+                                    text: "Points:",
+                                  ),
+                                ]
+                            )
+                        ),
+                        Text(
+                          reachedPoints.toString() + "/" + allPoints.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 50.0,
+                        right: 20.0,
+                        top: 5.0,
+                        bottom: 5.0
+                    ),
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RichText(
+                            text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      child: Padding(
+                                          padding: EdgeInsets.only(right: 5.0),
+                                          child: Icon(
+                                            Icons.attach_money,
+                                            color: Colors.green,
+                                          )
+                                      )
+                                  ),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      wordSpacing: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
                                     ),
-                                  ]
-                              )
+                                    text: "Costs:",
+                                  ),
+                                ]
+                            )
+                        ),
+                        Text(
+                          spentCosts.toString() + "/" + allCosts.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16.0,
                           ),
-                          Text(
-                            formatTimestamp(widget.snap.data['enddate'].toDate()),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 40.0,
-                          right: 20.0,
-                          top: 5.0,
-                          bottom: 5.0
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                              icon: Icon(
-                                Icons.add_circle,
-                                color: Colors.blue,
-                              ),
-                              iconSize: 50.0,
-                              onPressed: () async {
-                                await Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => AddTask(widget.snap.documentID, appState.currentProjectID)),
-                                );
-
-                                await Future.delayed(const Duration(seconds: 1), (){});
-                                _initDataAfterPop();
-                              },
-                          ),
-                          Text(
-                            "Add task",
-                            //formatTimestamp(widget.snap.data['enddate'].toDate()),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 50.0,
+                        right: 20.0,
+                        top: 5.0,
+                        bottom: 5.0
                     ),
-                  ],
-                ),
-              ) : Container(),
-            ],
-          ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RichText(
+                            text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      child: Padding(
+                                          padding: EdgeInsets.only(right: 5.0),
+                                          child: Icon(
+                                            Icons.timer,
+                                            color: Colors.red,
+                                          )
+                                      )
+                                  ),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      wordSpacing: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                    ),
+                                    text: "Deadline:",
+                                  ),
+                                ]
+                            )
+                        ),
+                        Text(
+                          formatTimestamp(widget.snap.data['enddate'].toDate()),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 40.0,
+                        right: 20.0,
+                        top: 5.0,
+                        bottom: 5.0
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.add_circle,
+                            color: Colors.blue,
+                          ),
+                          iconSize: 50.0,
+                          onPressed: () async {
+//                            await Navigator.push(context,
+//                              MaterialPageRoute(builder: (context) => AddTask(widget.snap.documentID, appState.currentProjectID)),
+//                            );
+//
+//                            await Future.delayed(const Duration(seconds: 1), (){});
+//                            _initDataAfterPop();
+                          },
+                        ),
+                        Text(
+                          "Add task",
+                          //formatTimestamp(widget.snap.data['enddate'].toDate()),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ) : Container(),
+          ],
         ),
+      ),
     );
   }
 

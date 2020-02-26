@@ -62,11 +62,11 @@ class _ToDoListState extends State<ToDoList> {
           child: new_todo()),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddTask("", appState.currentProjectID)),
-            );
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(
+//                  builder: (context) => AddTask("", appState.currentProjectID)),
+//            );
           },
           child: Icon(Icons.add)),
     );

@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
 
 import 'package:sabawa/ui/widgets/points_tv.dart';
+import 'package:sabawa/model/state.dart';
+import 'package:sabawa/state_widget.dart';
 
-class Points extends StatelessWidget {
+class Points extends StatefulWidget {
+
+  @override
+  _PointsState createState() => _PointsState();
+}
+
+class _PointsState extends State<Points> {
+
+  StateModel appState;
+  int onscreen;
+  double itemHeight;
+  double itemWidth;
+
+  @override
+  void initState() {
+    super.initState();
+
+    onscreen = 0;
+    itemHeight = 2;
+    itemWidth = 2;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final double itemHeight = 2;
-    final double itemWidth = 2;
+
+    appState = StateWidget.of(context).state;
 
     return Column(
       children: <Widget>[
@@ -45,7 +68,7 @@ class Points extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
 
                 ),
-                child: PointsTV(),
+                child: getPointsTV(),
               )
             ],
           ),
@@ -208,24 +231,61 @@ class Points extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child:Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.black,
-                      size: 90,
-                    ),
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 25,
+                            height: 25,
+                            padding: const EdgeInsets.all(1),
+                            color: Colors.black,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                width: 25,
+                                height: 25,
+                                padding: const EdgeInsets.all(1),
+                                color: Colors.black,
+                              ),Container(
+                                width: 25,
+                                height: 25,
+                                padding: const EdgeInsets.all(1),
+                                color: Colors.black,
+                              ),Container(
+                                width: 25,
+                                height: 25,
+                                padding: const EdgeInsets.all(1),
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 25,
+                            height: 25,
+                            padding: const EdgeInsets.all(1),
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 5,
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 20.0),
                       child: GridView.count(
                           primary: false,
                           childAspectRatio: (itemWidth / itemHeight),
-                          padding: const EdgeInsets.all(15),
+                          padding: const EdgeInsets.all(10),
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                           crossAxisCount: 5,
@@ -233,173 +293,10 @@ class Points extends StatelessWidget {
                     )
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xffbdbabb),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(3)),
-                                  ),
-                                  Positioned.fill(
-                                    child: Container(
-                                      margin: EdgeInsets.all(2.0),
-                                      decoration: new BoxDecoration(
-                                        color: Color(0xfffec612),
-                                        borderRadius: BorderRadius.circular(30),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xffbdbabb),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(3)),
-                                  ),
-                                  Positioned.fill(
-                                    child: Container(
-                                      margin: EdgeInsets.all(2.0),
-                                      decoration: new BoxDecoration(
-                                        color: Color(0xfff71518),
-                                        borderRadius: BorderRadius.circular(30),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xffbdbabb),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(3)),
-                                  ),
-                                  Positioned.fill(
-                                    child: Container(
-                                      margin: EdgeInsets.all(2.0),
-                                      decoration: new BoxDecoration(
-                                        color: Color(0xffc81b9b),
-                                        borderRadius: BorderRadius.circular(30),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 10.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    width: 35,
-                                    height: 35,
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xffbdbabb),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(3)),
-                                  ),
-                                  Positioned.fill(
-                                    child: Container(
-                                      margin: EdgeInsets.all(2.0),
-                                      decoration: new BoxDecoration(
-                                        color: Color(0xff1b4aa2),
-                                        borderRadius: BorderRadius.circular(30),
-                                        border: Border.all(
-                                          color: Color(0xff707070),
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-//              Row(
-//                children: <Widget>[
-//                  Expanded(
-//                    flex: 2,
-//                    child: GridView.count(
-//                        primary: false,
-//                        childAspectRatio: (itemWidth / itemHeight),
-//                        padding: const EdgeInsets.all(15),
-//                        crossAxisSpacing: 5,
-//                        mainAxisSpacing: 5,
-//                        crossAxisCount: 8,
-//                        children: keyboard.toList()),
-//                  ),
-//                  Expanded(
-//                    flex: 1,
-//                    child: Column(
-//                      children: <Widget>[
-//                        Icon(
-//                          Icons.add,
-//                          color: Colors.black,
-//                          size: 70,
-//                        ),
 //                        Row(
 //                          mainAxisAlignment: MainAxisAlignment.center,
 //                          children: <Widget>[
@@ -467,79 +364,99 @@ class Points extends StatelessWidget {
 //                            ),
 //                          ],
 //                        ),
-//                        Padding(padding: EdgeInsets.symmetric(vertical: 10.0)),
-//                        Row(
-//                          mainAxisAlignment: MainAxisAlignment.center,
-//                          children: <Widget>[
-//                            Padding(
-//                              padding: EdgeInsets.only(right: 10.0),
-//                              child: Stack(
-//                                children: <Widget>[
-//                                  Container(
-//                                    width: 35,
-//                                    height: 35,
-//                                    decoration: new BoxDecoration(
-//                                        color: Color(0xffbdbabb),
-//                                        border: Border.all(
-//                                          color: Color(0xff707070),
-//                                          width: 1,
-//                                        ),
-//                                        borderRadius: BorderRadius.circular(3)),
-//                                  ),
-//                                  Positioned.fill(
-//                                    child: Container(
-//                                      margin: EdgeInsets.all(2.0),
-//                                      decoration: new BoxDecoration(
-//                                        color: Color(0xffc81b9b),
-//                                        borderRadius: BorderRadius.circular(30),
-//                                        border: Border.all(
-//                                          color: Color(0xff707070),
-//                                          width: 1,
-//                                        ),
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ],
-//                              ),
-//                            ),
-//                            Padding(
-//                              padding: EdgeInsets.only(right: 10.0),
-//                              child: Stack(
-//                                children: <Widget>[
-//                                  Container(
-//                                    width: 35,
-//                                    height: 35,
-//                                    decoration: new BoxDecoration(
-//                                        color: Color(0xffbdbabb),
-//                                        border: Border.all(
-//                                          color: Color(0xff707070),
-//                                          width: 1,
-//                                        ),
-//                                        borderRadius: BorderRadius.circular(3)),
-//                                  ),
-//                                  Positioned.fill(
-//                                    child: Container(
-//                                      margin: EdgeInsets.all(2.0),
-//                                      decoration: new BoxDecoration(
-//                                        color: Color(0xff1b4aa2),
-//                                        borderRadius: BorderRadius.circular(30),
-//                                        border: Border.all(
-//                                          color: Color(0xff707070),
-//                                          width: 1,
-//                                        ),
-//                                      ),
-//                                    ),
-//                                  ),
-//                                ],
-//                              ),
-//                            ),
-//                          ],
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                ],
-//              ),
+//                        Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    width: 70,
+                                    height: 35,
+                                    decoration: new BoxDecoration(
+                                        color: Color(0xffbdbabb),
+                                        border: Border.all(
+                                          color: Color(0xff707070),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(3)),
+
+                                  ),
+                                  Positioned.fill(
+                                    child: Container(
+                                      margin: EdgeInsets.all(2.0),
+                                      decoration: new BoxDecoration(
+                                        color: Color(0xffc81b9b),
+                                        borderRadius: BorderRadius.circular(30),
+                                        border: Border.all(
+                                          color: Color(0xff707070),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'DEL',
+                                          style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 5.0)),
+                            Padding(
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    width: 70,
+                                    height: 35,
+                                    decoration: new BoxDecoration(
+                                        color: Color(0xffbdbabb),
+                                        border: Border.all(
+                                          color: Color(0xff707070),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(3)),
+                                  ),
+                                  Positioned.fill(
+                                    child: Container(
+                                      margin: EdgeInsets.all(2.0),
+                                      decoration: new BoxDecoration(
+                                        color: Color(0xff1b4aa2),
+                                        borderRadius: BorderRadius.circular(30),
+                                        border: Border.all(
+                                          color: Color(0xff707070),
+                                          width: 1,
+                                        ),
+                                      ),
+                                        child: Center(
+                                          child: Text(
+                                            'ENT',
+                                            style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),)
             ],
           ),
         ),
@@ -547,19 +464,818 @@ class Points extends StatelessWidget {
     );
   }
 
-  List<Container> numbers = <Container>[
-    Container(
-      padding: const EdgeInsets.all(1),
-      child: Text(
-        '0',
-        style: TextStyle(
-          fontFamily: 'Montserrat',
-          fontWeight: FontWeight.w900,
-          fontSize: 20,
-        ),
+  Widget getPointsTV() {
+    switch (onscreen) {
+      case 0:
+        {
+          return _overview();
+        }
+        break;
+
+      case 1:
+        {
+          return _level();
+        }
+        break;
+      case 2:
+        {
+          return _points();
+        }
+        break;
+      case 3:
+        {
+          return _progress();
+        }
+        break;
+      case 4:
+        {
+          return _dailyGoal();
+        }
+        break;
+
+      default:
+        {
+          return _overview();
+        }
+        break;
+    }
+  }
+
+  Widget _progress() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Progress",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(width: 2.0, color: Colors.white),
+                  bottom: BorderSide(width: 2.0, color: Colors.white),
+                ),
+                color: Color(0xff1d2a33),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "3000",
+                          style: TextStyle(
+                            fontFamily: 'VT323',
+                            color: Color(0xffffffff),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        Container(
+                          height: 38,
+                          decoration: new BoxDecoration(
+                            color: Color(0xffffffff),
+                            border: Border.all(
+                              color: Color(0xff707070),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-      color: Colors.white,
-    ),
+    );
+  }
+
+  Widget _dailyGoal() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Daily Goal",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Text("Enter your Daily Goal:",
+              style: TextStyle(
+                fontFamily: 'VT323',
+                color: Color(0xffffffff),
+                fontSize: 31,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+              )),
+          Padding(padding: EdgeInsets.only(top: 10.0)),
+          Center(
+            child: Text(appState.currentUser.dailygoal.toString(),
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xffffffff),
+                  fontSize: 68,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                )),
+
+          ),
+          Center(
+            child: Text("--------",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xffffffff),
+                  fontSize: 31,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                )),)
+        ],
+      ),
+    );
+  }
+
+  Widget _points() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Points",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      width: 284,
+                      height: 30,
+                      decoration: new BoxDecoration(
+                        color: Color(0xffffffff),
+                        border: Border.all(
+                          color: Color(0xff707070),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: appState.currentUser.points * 284 / 30000,
+                      height: 30,
+                      decoration: new BoxDecoration(
+                        color: Color(0xff26cf31),
+                        border: Border.all(
+                          color: Color(0xff707070),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      width: 284,
+                      height: 30,
+                      decoration: new BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xff707070),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        //alignment: Alignment.center,
+                          child: Text(
+                            appState.currentUser.points.toString(),
+                            style: TextStyle(
+                              fontFamily: 'VT323',
+                              color: Colors.black,
+                              fontSize: 31,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "0",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xffffffff),
+                        fontSize: 31,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    Text(
+                      "30000",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xffffffff),
+                        fontSize: 31,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _level() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Level",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Center(
+            child: Image.asset("assets/level/8bitcup_" + appState.currentUser.level.toString() + ".png"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _overview() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "SABAWA",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Text(
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  "*",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Level",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 1;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  appState.currentUser.level.toString(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Points",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 2;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  appState.currentUser.points.toString(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Weekly Hi-Score",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 3;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "0",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Daily Goal",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 4;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "0",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Container> numbers = <Container>[
+
     Container(
       padding: const EdgeInsets.all(1),
       child: Text(
@@ -660,6 +1376,18 @@ class Points extends StatelessWidget {
       padding: const EdgeInsets.all(1),
       child: Text(
         '9',
+        style: TextStyle(
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.w900,
+          fontSize: 20,
+        ),
+      ),
+      color: Colors.white,
+    ),
+    Container(
+      padding: const EdgeInsets.all(1),
+      child: Text(
+        '0',
         style: TextStyle(
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.w900,

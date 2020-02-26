@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sabawa/ui/screens/points.dart';
 import 'package:sabawa/ui/screens/achievements.dart';
 
+import 'package:sabawa/ui/widgets/points_appbar.dart';
+
 class PointsTabController extends StatefulWidget {
   const PointsTabController({Key key}) : super(key: key);
 
@@ -34,62 +36,10 @@ class _PointsTabControllerState extends State<PointsTabController>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 5.0, right: 5.0),
-              child: Image.asset(
-                "assets/nav/star.png",
-                width: 25.0,
-              ),
-            ),
-            Text(
-              "20000",
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Color(0xffffffff),
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, right: 5.0),
-              child: Image.asset(
-                "assets/nav/gold.png",
-                width: 25.0,
-              ),
-            ),
-            Text(
-              "4000",
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Color(0xffffffff),
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Color(0xFF432d2d),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelStyle: TextStyle(
-            fontSize: 17.0,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w900,
-          ),
-          unselectedLabelStyle: TextStyle(
-            fontSize: 10.0,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w700,
-          ),
-          tabs: myTabs,
-        ),
-      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(55.0),
+    child: PointsAppBar(color: Color(0xff432d2d)),
+    ),
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[

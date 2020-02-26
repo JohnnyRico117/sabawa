@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:sabawa/ui/theme.dart';
 import 'package:sabawa/ui/screens/friend_list.dart';
+import 'package:sabawa/ui/screens/design.dart';
 import 'package:sabawa/ui/screens/login.dart';
 import 'package:sabawa/ui/screens/profile.dart';
 import 'package:sabawa/ui/screens/projects.dart';
@@ -26,6 +27,7 @@ class SabawaApp extends StatelessWidget {
         '/friends': (context) => FriendList(),
         '/projects': (context) => Projects(),
         '/overview': (context) => Overview(),
+        '/design': (context) => Design(),
         '/shop': (context) => Shop(),
       },
     );

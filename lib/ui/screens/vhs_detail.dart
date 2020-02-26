@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:sabawa/ui/shapes/rainbow_corner.dart';
 
 class VHSDetail extends StatefulWidget {
+
+  final DocumentSnapshot snap;
+
+  VHSDetail(this.snap);
+
   @override
   _VHSDetailState createState() => _VHSDetailState();
 }
@@ -70,7 +77,7 @@ class _VHSDetailState extends State<VHSDetail> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.only(left: 5.0),
-                          child: new Text("Make Design",
+                          child: new Text(widget.snap.data['task'],
                               style: TextStyle(
                                 fontFamily: 'PermanentMarker',
                                 color: Color(0xff432d2d),
@@ -98,7 +105,7 @@ class _VHSDetailState extends State<VHSDetail> {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(left: 5.0),
-                              child: Text("Info: Make the Design Ready",
+                              child: Text("Info: " + (widget.snap.data['detail'] ?? "No detail info"),
                                   style: TextStyle(
                                     fontFamily: 'PermanentMarker',
                                     color: Color(0xff432d2d),
@@ -116,49 +123,49 @@ class _VHSDetailState extends State<VHSDetail> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 60.0),
-                              child: Text("For Sabawa",
-                                  style: TextStyle(
-                                    fontFamily: 'PermanentMarker',
-                                    color: Color(0xff432d2d),
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.normal,
-                                  )),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 0.0),
-                              child: Container(
-                                width: 290,
-                                child: Divider(
-                                  thickness: 2.0,
-                                ),
-                              ),
-                            ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 5.0),
-                            child:new Text("Link: Click Me ",
-                                style: TextStyle(
-                                  fontFamily: 'PermanentMarker',
-                                  color: Color(0xff432d2d),
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                )),),
-
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 0.0),
-                              child: Container(
-                                width: 290,
-                                child: Divider(
-                                  thickness: 2.0,
-                                ),
-                              ),
-                            ),
+//                            Padding(
+//                              padding: EdgeInsets.only(left: 60.0),
+//                              child: Text("For Sabawa",
+//                                  style: TextStyle(
+//                                    fontFamily: 'PermanentMarker',
+//                                    color: Color(0xff432d2d),
+//                                    fontSize: 19,
+//                                    fontWeight: FontWeight.w400,
+//                                    fontStyle: FontStyle.normal,
+//                                  )),
+//                            ),
+//                            Padding(
+//                              padding: EdgeInsets.only(bottom: 0.0),
+//                              child: Container(
+//                                width: 290,
+//                                child: Divider(
+//                                  thickness: 2.0,
+//                                ),
+//                              ),
+//                            ),
+//                          Padding(
+//                            padding: EdgeInsets.only(left: 5.0),
+//                            child:new Text("Link: Click Me ",
+//                                style: TextStyle(
+//                                  fontFamily: 'PermanentMarker',
+//                                  color: Color(0xff432d2d),
+//                                  fontSize: 19,
+//                                  fontWeight: FontWeight.w400,
+//                                  fontStyle: FontStyle.normal,
+//                                )),),
+//
+//                            Padding(
+//                              padding: EdgeInsets.only(bottom: 0.0),
+//                              child: Container(
+//                                width: 290,
+//                                child: Divider(
+//                                  thickness: 2.0,
+//                                ),
+//                              ),
+//                            ),
                             Padding(
                               padding: EdgeInsets.only(left: 5.0),
-                              child:new Text("Deadline: Fri, 14.02.2020 ",
+                              child:new Text("Deadline: " + formatTimestamp(widget.snap.data['enddate'].toDate()),
                                   style: TextStyle(
                                     fontFamily: 'PermanentMarker',
                                     color: Color(0xff432d2d),
@@ -178,7 +185,7 @@ class _VHSDetailState extends State<VHSDetail> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 5.0),
-                              child:new Text("Duration: 2h",
+                              child:new Text("Duration: " + widget.snap.data['hours'].toString() + "h",
                                   style: TextStyle(
                                     fontFamily: 'PermanentMarker',
                                     color: Color(0xff432d2d),
@@ -246,7 +253,7 @@ class _VHSDetailState extends State<VHSDetail> {
                     "assets/nav/star.png",
                   ),
                 ),
-                Text("500",
+                Text(widget.snap.data['points'].toString(),
                     style: TextStyle(
                       fontFamily: 'PermanentMarker',
                       color: Color(0xffffffff),
@@ -260,5 +267,10 @@ class _VHSDetailState extends State<VHSDetail> {
         ],
       ),
     );
+  }
+
+  String formatTimestamp(DateTime timestamp) {
+    var format = new DateFormat('d MMM, hh:mm');
+    return format.format(timestamp);
   }
 }

@@ -51,7 +51,9 @@ class LoginScreen extends StatelessWidget {
                   width: 222.0,
                   child: FlatButton(
                     onPressed: () {
-                      print("LOGIN");
+                      StateWidget.of(context).signInWithGoogle();
+                      //Navigator.pushReplacementNamed(context, '/');
+                      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,14 +92,14 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
 
-
               Padding(
                 padding: EdgeInsets.only(top: 0.0),
                 child: Container(
                   width: 222.0,
                   child: FlatButton(
                     onPressed: () {
-                      print("LOGIN");
+//                      StateWidget.of(context).signInWithGoogle();
+//                      Navigator.pushNamed(context, '/');
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

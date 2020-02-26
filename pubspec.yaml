@@ -25,6 +25,7 @@ dependencies:
   firebase_auth: ^0.15.4
   firebase_database: ^3.1.1
   firebase_storage: ^3.1.1
+  flutter_email_sender: ^2.2.2
   flutter_material_color_picker: ^1.0.5
   flutter_speed_dial: ^1.2.5
   google_sign_in: ^4.1.1
@@ -60,6 +61,8 @@ flutter:
     - assets/goal.png
     - assets/check.png
     - assets/checked.png
+    - assets/trophy.png
+    - assets/trophy_512.png
     - assets/nav/star.png
     - assets/nav/star_border.png
     - assets/nav/forehead-bandana.png
@@ -68,7 +71,17 @@ flutter:
     - assets/nav/gold_border.png
     - assets/nav/cassette.png
     - assets/nav/cassette_border.png
+    - assets/nav/feedback.png
+    - assets/nav/feedback_border.png
     - assets/level/8bitcup_1.png
+    - assets/level/8bitcup_2.png
+    - assets/level/8bitcup_3.png
+    - assets/level/8bitcup_4.png
+    - assets/level/8bitcup_5.png
+    - assets/level/8bitcup_6.png
+    - assets/level/8bitcup_7.png
+    - assets/level/8bitcup_8.png
+    - assets/level/8bitcup_9.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

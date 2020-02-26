@@ -3,83 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:sabawa/ui/widgets/title_item.dart';
 import 'package:sabawa/ui/widgets/shop_item.dart';
 
+import 'package:sabawa/model/state.dart';
+import 'package:sabawa/state_widget.dart';
+
+import 'package:sabawa/ui/widgets/points_appbar.dart';
+
 class Shop extends StatefulWidget {
   @override
   _ShopState createState() => _ShopState();
 }
 
 class _ShopState extends State<Shop> {
+  StateModel appState;
+
   @override
   Widget build(BuildContext context) {
+    appState = StateWidget.of(context).state;
     return Scaffold(
-      appBar: AppBar(
-
-        title: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 5.0, right: 5.0),
-              child: Image.asset("assets/nav/star.png",
-                width: 25.0,
-              ),
-            ),
-            Text(
-              "20000",
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Color(0xffffffff),
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 25.0, right: 5.0),
-              child: Image.asset("assets/nav/gold.png",
-                width: 25.0,
-              ),
-            ),
-            Text(
-              "4000",
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: Color(0xffffffff),
-                fontSize: 17,
-                fontWeight: FontWeight.w900,
-                fontStyle: FontStyle.normal,
-              ),
-            ),
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(55.0),
+          child: PointsAppBar(color: Color(0xff432d2d)),
         ),
-        backgroundColor: Color(0xFF432d2d),
 
-//        bottom: PreferredSize(
-//          preferredSize: Size.fromHeight(50.0),
-//          child:  Container(
-//              height: 50.0,
-//              alignment: Alignment.centerLeft,
-//              color: Color(0xFF432d2d),
-//              //child: TitleItem(title: "SHOPPING MALL",)
-//            child: Padding(
-//              padding: EdgeInsets.only(left: 15.0),
-//              child: Text(
-//                "SHOPPING MALL",
-//                style: TextStyle(
-//                  fontFamily: 'Montserrat',
-//                  color: Colors.white,
-//                  fontSize: 25,
-//                  fontWeight: FontWeight.w900,
-//                  fontStyle: FontStyle.normal,
-//                ),
-//              ),
-//            )
-//
-//            ),
-//          ),
-//
-
-      ),
-
-      body: _shop()
+      body: appState.currentUser.coins == 0 ? _insertCoin() : _shop()
     );
   }
 

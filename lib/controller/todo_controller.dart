@@ -9,6 +9,10 @@ import 'package:sabawa/ui/widgets/vhs_todo_item.dart';
 
 import 'package:sabawa/ui/shapes/triangle_clipper.dart';
 
+import 'package:sabawa/ui/screens/add/add_task.dart';
+
+import 'package:sabawa/ui/widgets/points_appbar.dart';
+
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/model/phase.dart';
 import 'package:sabawa/state_widget.dart';
@@ -30,7 +34,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
   final List<Tab> myTabs = <Tab>[
     Tab(text: 'TODAY'),
     Tab(text: 'WEEK'),
-    Tab(text: 'MONTH'),
+    Tab(text: 'ALLTIME'),
   ];
 
   TabController _tabController;
@@ -53,17 +57,35 @@ class _ToDoTabControllerState extends State<ToDoTabController>
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 5.0,
         title: Row(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(left: 5.0, right: 5.0),
+              child: Image.asset(
+                "assets/goal.png",
+                width: 25.0,
+              ),
+            ),
+            Text(
+              appState.currentUser.level.toString(),
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: Color(0xffffffff),
+                fontSize: 17,
+                fontWeight: FontWeight.w900,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 25.0, right: 5.0),
               child: Image.asset(
                 "assets/nav/star.png",
                 width: 25.0,
               ),
             ),
             Text(
-              "20000",
+              appState.currentUser.points.toString(),
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: Color(0xffffffff),
@@ -80,7 +102,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
               ),
             ),
             Text(
-              "4000",
+              appState.currentUser.coins.toString(),
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: Color(0xffffffff),
@@ -115,6 +137,26 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             Stack(
               children: <Widget>[
                 Positioned.fill(
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: today(),
+                      ),
+                    ],
+                  )
+                ),
+                Positioned.fill(
+                  bottom: 0.0,
+                  child: Container(
+                    height: 100.0,
+                    child: rainbow(),
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              children: <Widget>[
+                Positioned.fill(
                   child: today(),
                 ),
                 Positioned.fill(
@@ -126,8 +168,20 @@ class _ToDoTabControllerState extends State<ToDoTabController>
                 ),
               ],
             ),
-            Achievements(),
-            Points()
+            Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: today(),
+                ),
+                Positioned.fill(
+                  bottom: 0.0,
+                  child: Container(
+                    height: 100.0,
+                    child: rainbow(),
+                  ),
+                ),
+              ],
+            ),
           ],
 //        children: myTabs.map((Tab tab) {
 //          final String label = tab.text.toLowerCase();
@@ -148,6 +202,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             color: Colors.black,
           ),
           onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddTask()));
             print("TEST");
           }),
     );
@@ -157,7 +212,8 @@ class _ToDoTabControllerState extends State<ToDoTabController>
     return new StreamBuilder(
       stream: Firestore.instance
           .collection('tasks')
-          .where("project", isEqualTo: appState.currentProjectID)
+          //.where("project", isEqualTo: appState.currentProjectID)
+          .where("owner", isEqualTo: appState.currentUser.id)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return LoadingIndicator();
@@ -188,8 +244,18 @@ class _ToDoTabControllerState extends State<ToDoTabController>
           padding: EdgeInsets.only(top: 10.0),
           child: ListView(
             padding: EdgeInsets.only(bottom: 100.0),
-            children: snapshot.data.documents.map((document) {
-              return VHSToDoItem(document);
+            children: snapshot.data.documents
+                .where((d) => d.data['status'] != 1  && calculateDaysUntilDeadline(d) == 0)
+                .map((document) {
+              return VHSToDoItem(
+                snap: document,
+                updatePoints: (value) {
+                  setState(() {
+                    appState.currentUser.points += value;
+                    appState.currentUser.coins += value;
+                  });
+                },
+              );
             }).toList(),
           ),
         );
@@ -220,6 +286,35 @@ class _ToDoTabControllerState extends State<ToDoTabController>
 //          }
       },
     );
+  }
+
+  int calculateDaysUntilDeadline(DocumentSnapshot snap) {
+
+    DateTime date = new DateTime.now();
+    DateTime lastMidnight = new DateTime(date.year, date.month, date.day);
+//    double now = new Timestamp.now().seconds / 3600;
+//    int hours;
+//    double endDate;
+//    double hoursLeft = 0.0;
+    //int _difference = 0;
+
+    return DateTime.fromMillisecondsSinceEpoch(
+        snap.data["enddate"].seconds * 1000)
+        .difference(lastMidnight)
+        .inDays;
+
+    //print("DIffernece: " + _difference.toString());
+
+    //hours = snap.data['hours'];
+    //endDate = snap.data['enddate'].seconds / 3600;
+    //now = Timestamp.now().seconds / 3600;
+
+    //hoursLeft = endDate - now;
+//    if (hoursLeft >= 0) {
+//      percent = 1.0 - hoursLeft / (hours * 100.0);
+//    }
+
+
   }
 
   Widget rainbow() {

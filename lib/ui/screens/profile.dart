@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:sabawa/model/state.dart';
 import 'package:sabawa/state_widget.dart';
+import 'package:sabawa/ui/widgets/points_appbar.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,68 +13,14 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   StateModel appState;
 
-
-
   @override
   Widget build(BuildContext context) {
     appState = StateWidget.of(context).state;
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff310818),
-          title: Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                child: Image.asset("assets/nav/star.png",
-                  width: 25.0,
-                ),
-              ),
-              Text(
-                "20000",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xffffffff),
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.normal,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 25.0, right: 5.0),
-                child: Image.asset("assets/nav/gold.png",
-                  width: 25.0,
-                ),
-              ),
-              Text(
-                "4000",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xffffffff),
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.normal,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 25.0, right: 5.0),
-                child: Image.asset("assets/goal.png",
-                  width: 25.0,
-                ),
-              ),
-              Text(
-                "1",
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: Color(0xffffffff),
-                  fontSize: 17,
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.normal,
-                ),
-              ),
-            ],
-          ),
-          //title: Text(appState.user.displayName),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(55.0),
+          child: PointsAppBar(color: Color(0xff310818)),
         ),
         body: Container(
           width: double.maxFinite,
@@ -83,13 +30,31 @@ class _ProfileState extends State<Profile> {
           child: Column(
             children: <Widget>[
               _buildAvatar(),
-              _neonText("EKATERINA", Color(0xffff3988), 39.0),
+              _neonText(appState.user.displayName.split(" ").first, Color(0xffff3988), 39.0),
               Padding(
                 padding: EdgeInsets.only(top: 20.0),
               ),
-              _neonSign("FRIENDS", Color(0xff026af4), Icons.people_outline),
-              _neonSign("FRIENDS", Color(0xfffbeb10), Icons.favorite_border),
-              _neonSign("FRIENDS", Color(0xff5fef5f), Icons.settings),
+              GestureDetector(
+                child: _neonSign("FRIENDS", Color(0xff026af4), Icons.people_outline),
+                onTap: () {
+                  //Navigator.pushNamed(context, route);
+                },
+              ),
+              GestureDetector(
+                child: _neonSign("DESIGN", Color(0xfffbeb10), Icons.favorite_border),
+                onTap: () {
+                  Navigator.pushNamed(context, "/design");
+                },
+              ),
+              GestureDetector(
+                child: _neonSign("SETTINGS", Color(0xff5fef5f), Icons.settings),
+                onTap: () {
+                  Navigator.pushNamed(context, "/settings");
+                },
+              ),
+
+
+
 
 
               //_buildAvatar(),
@@ -153,8 +118,8 @@ class _ProfileState extends State<Profile> {
                       child: ClipRect(
                         child: BackdropFilter(
                           filter: ImageFilter.blur(
-                            sigmaX: 4.0,
-                            sigmaY: 4.0,
+                            sigmaX: 3.0,
+                            sigmaY: 3.0,
                           ),
                           child: Container(
 
@@ -181,8 +146,8 @@ class _ProfileState extends State<Profile> {
     return Padding(
       padding: EdgeInsets.only(bottom: 20.0),
       child: CircleAvatar(
-        backgroundImage: AssetImage("assets/avatar.png"),
-        //backgroundImage: new NetworkImage(appState.user.photoUrl),
+        //backgroundImage: AssetImage("assets/avatar.png"),
+        backgroundImage: new NetworkImage(appState.user.photoUrl),
         radius: 50.0,
       ),
     );

@@ -1,14 +1,61 @@
 import 'package:flutter/material.dart';
 
+import 'package:sabawa/state_widget.dart';
+
+import 'package:sabawa/model/state.dart';
+
 class PointsTV extends StatefulWidget {
   @override
   _PointsTVState createState() => _PointsTVState();
 }
 
 class _PointsTVState extends State<PointsTV> {
+  int onscreen;
+  StateModel appState;
+
+  @override
+  void initState() {
+    super.initState();
+    onscreen = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _progress();
+    appState = StateWidget.of(context).state;
+    switch (onscreen) {
+      case 0:
+        {
+          return _overview();
+        }
+        break;
+
+      case 1:
+        {
+          return _level();
+        }
+        break;
+      case 2:
+        {
+          return _points();
+        }
+        break;
+      case 3:
+        {
+          return _progress();
+        }
+        break;
+      case 4:
+        {
+          return _dailyGoal();
+        }
+        break;
+
+      default:
+        {
+          return _overview();
+        }
+        break;
+    }
   }
 
   Widget _progress() {
@@ -17,15 +64,39 @@ class _PointsTVState extends State<PointsTV> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Progress",
-            style: TextStyle(
-              fontFamily: 'VT323',
-              color: Color(0xfffafafa),
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-            ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Progress",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
           ),
           Text(
             "-----------------------",
@@ -129,7 +200,8 @@ class _PointsTVState extends State<PointsTV> {
                         ),
                       ],
                     ),
-                  ),Expanded(
+                  ),
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -155,7 +227,8 @@ class _PointsTVState extends State<PointsTV> {
                         ),
                       ],
                     ),
-                  ),Expanded(
+                  ),
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -181,7 +254,8 @@ class _PointsTVState extends State<PointsTV> {
                         ),
                       ],
                     ),
-                  ),Expanded(
+                  ),
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -207,7 +281,8 @@ class _PointsTVState extends State<PointsTV> {
                         ),
                       ],
                     ),
-                  ),Expanded(
+                  ),
+                  Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -249,15 +324,39 @@ class _PointsTVState extends State<PointsTV> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Daily Goal",
-            style: TextStyle(
-              fontFamily: 'VT323',
-              color: Color(0xfffafafa),
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-            ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Daily Goal",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
           ),
           Text(
             "-----------------------",
@@ -299,15 +398,39 @@ class _PointsTVState extends State<PointsTV> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Points",
-            style: TextStyle(
-              fontFamily: 'VT323',
-              color: Color(0xfffafafa),
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-            ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Points",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
           ),
           Text(
             "-----------------------",
@@ -327,7 +450,7 @@ class _PointsTVState extends State<PointsTV> {
                   children: <Widget>[
                     Container(
                       width: 284,
-                      height: 16,
+                      height: 30,
                       decoration: new BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
@@ -337,14 +460,38 @@ class _PointsTVState extends State<PointsTV> {
                       ),
                     ),
                     Container(
-                      width: 211,
-                      height: 16,
+                      width: appState.currentUser.points * 2.84,
+                      height: 30,
                       decoration: new BoxDecoration(
                         color: Color(0xff26cf31),
                         border: Border.all(
                           color: Color(0xff707070),
                           width: 1,
                         ),
+                      ),
+                    ),
+
+                    Container(
+                      width: 284,
+                      height: 30,
+                      decoration: new BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xff707070),
+                          width: 1,
+                        ),
+                      ),
+                      child: Center(
+                        //alignment: Alignment.center,
+                          child: Text(
+                            appState.currentUser.points.toString(),
+                            style: TextStyle(
+                              fontFamily: 'VT323',
+                              color: Colors.black,
+                              fontSize: 31,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          )
                       ),
                     ),
                   ],
@@ -391,8 +538,66 @@ class _PointsTVState extends State<PointsTV> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Text(
+                    "<<",
+                    style: TextStyle(
+                      fontFamily: 'VT323',
+                      color: Color(0xfffafafa),
+                      fontSize: 30,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    onscreen = 0;
+                  });
+                },
+              ),
+              Text(
+                "Level",
+                style: TextStyle(
+                  fontFamily: 'VT323',
+                  color: Color(0xfffafafa),
+                  fontSize: 30,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
           Text(
-            "Level",
+            "-----------------------",
+            style: TextStyle(
+              fontFamily: 'VT323',
+              color: Color(0xfffafafa),
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          Center(
+            child: Image.asset("assets/level/8bitcup_" + appState.currentUser.level.toString() + ".png"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _overview() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "SABAWA",
             style: TextStyle(
               fontFamily: 'VT323',
               color: Color(0xfffafafa),
@@ -411,189 +616,208 @@ class _PointsTVState extends State<PointsTV> {
               fontStyle: FontStyle.normal,
             ),
           ),
-          Center(
-            child: Image.asset("assets/level/8bitcup_1.png"),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  "*",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Level",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 1;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  appState.currentUser.level.toString(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Points",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 2;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  appState.currentUser.points.toString(),
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Weekly Hi-Score",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 3;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "0",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Text(
+                  " ",
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 33,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 6,
+                  child: GestureDetector(
+                    child: Text(
+                      "Daily Goal",
+                      style: TextStyle(
+                        fontFamily: 'VT323',
+                        color: Color(0xfffafafa),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        onscreen = 4;
+                      });
+                    },
+                  )),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "0",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: 'VT323',
+                    color: Color(0xfffafafa),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
-  }
-
-  Widget _overview() {
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("SABAWA",
-                style: TextStyle(
-                  fontFamily: 'VT323',
-                  color: Color(0xfffafafa),
-                  fontSize: 30,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                )),
-            Text("-----------------------",
-                style: TextStyle(
-                  fontFamily: 'VT323',
-                  color: Color(0xfffafafa),
-                  fontSize: 30,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                )),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text("*",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 33,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Text("Level",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text("1",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text(" ",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 33,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Text("Points",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text("20000",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text(" ",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 33,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Text("Weekly Hi-Score",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text("3000",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Text(" ",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 33,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Text("Daily Goal",
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text("300",
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontFamily: 'VT323',
-                        color: Color(0xfffafafa),
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                ),
-              ],
-            ),
-          ],
-        ));
   }
 }

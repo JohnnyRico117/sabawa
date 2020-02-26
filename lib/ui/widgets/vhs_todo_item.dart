@@ -9,8 +9,9 @@ import 'package:sabawa/ui/screens/vhs_detail.dart';
 
 class VHSToDoItem extends StatefulWidget {
   final DocumentSnapshot snap;
+  final Function(int) updatePoints;
 
-  VHSToDoItem(this.snap);
+  VHSToDoItem({this.snap, this.updatePoints});
 
   @override
   _VHSToDoItemState createState() => _VHSToDoItemState();
@@ -45,9 +46,10 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
     final double hoursLeft = endDate - now;
     final double percent = 1.0 - hoursLeft / (hours * 100.0);
 
-    return GestureDetector(child:Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-      child: Container(
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+        child: Container(
           width: 329,
           height: 64,
           decoration: new BoxDecoration(
@@ -60,13 +62,125 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   status == 0
-                      ? Image.asset(
-                          "assets/check.png",
-                          width: 30,
+                      ? GestureDetector(
+                          child: Image.asset(
+                            "assets/check.png",
+                            width: 30,
+                          ),
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: (_) => AlertDialog(
+                                      title: Text(
+                                        "Great!!!",
+                                        style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          color: Color(0xff432d2d),
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w800,
+                                          fontStyle: FontStyle.normal,
+                                        ),
+                                      ),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Image.asset(
+                                            "assets/trophy_512.png",
+                                            height: 100.0,
+                                            width: 100.0,
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.0),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Image.asset(
+                                                "assets/nav/star.png",
+                                                height: 30.0,
+                                                width: 30.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5.0),
+                                                child: Text(
+                                                  "+" + widget.snap.data['points'].toString(),
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    color: Color(0xff432d2d),
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w800,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 10.0),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Image.asset(
+                                                "assets/nav/gold.png",
+                                                height: 30.0,
+                                                width: 30.0,
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 5.0),
+                                                child: Text(
+                                                  "+" + widget.snap.data['points'].toString(),
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    color: Color(0xff432d2d),
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w800,
+                                                    fontStyle: FontStyle.normal,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Oops, Undo!"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            print("Oops");
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("Nice"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            updateStatus();
+                                            print("Nice");
+                                          },
+                                        ),
+                                      ],
+                                      elevation: 20.0,
+                                    ));
+                          },
                         )
-                      : Image.asset(
-                          "assets/checked.png",
-                          width: 30,
+                      : GestureDetector(
+                          child: Image.asset(
+                            "assets/checked.png",
+                            width: 30,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              setState(() {
+                                widget.snap.reference.updateData({'status': 0});
+                              });
+                            });
+                          },
                         ),
                   Padding(
                     padding: EdgeInsets.only(left: 25.0),
@@ -116,28 +230,36 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
                 ),
               ),
             ],
-          ),),
-    ),onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => VHSDetail()),
-      );
-    },);
+          ),
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => VHSDetail(widget.snap)),
+        );
+      },
+    );
   }
 
-  String formatTimestamp(DateTime timestamp) {
-    var format = new DateFormat('d MMM, hh:mm');
-    return format.format(timestamp);
-  }
+  void updateStatus() {
+    final DocumentReference postRef =
+        Firestore.instance.collection('users').document(appState.user.uid);
+    Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(postRef);
+      if (postSnapshot.exists) {
+        await tx.update(postRef, <String, dynamic>{
+          'points': FieldValue.increment(widget.snap.data['points']),
+          'coins': FieldValue.increment(widget.snap.data['points']),
+        });
+      }
+    });
 
-  String _formatTimestampToTime(DateTime timestamp) {
-    var format = new DateFormat('hh:mm');
-    return format.format(timestamp);
-  }
+    setState(() {
+      widget.snap.reference.updateData({'status': 1});
+    });
 
-  String _formatTimestampToDay(DateTime timestamp) {
-    var format = new DateFormat('d.MM');
-    return format.format(timestamp);
+    widget.updatePoints(widget.snap.data['points']);
   }
 
   @override

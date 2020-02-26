@@ -8,7 +8,6 @@ class FriendItem extends StatelessWidget {
           width: 348,
           height: 68,
           decoration: new BoxDecoration(
-
           ),
         child: Row(
           children: <Widget>[

@@ -132,6 +132,9 @@ class Design extends StatelessWidget {
                   child: FlatButton(
                     child: Text("ON"),
                     color: state ? Colors.green : Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0)
+                    ),
                     onPressed: () {
                       print("ON");
                     },
@@ -143,6 +146,9 @@ class Design extends StatelessWidget {
                   child: FlatButton(
                     child: Text("OFF"),
                     color: state ? Colors.white : Colors.red,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0)
+                    ),
                     onPressed: () {
                       print("OFF");
                     },

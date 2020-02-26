@@ -35,18 +35,11 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   Color _bottomNavBackGround = Color(0xfff3f2dd);
 
   List<Widget> _widgetOptions = <Widget>[
-    //Home(),
-    //Overview(),
-    //Friend(),
-    RainbowCorner(),
-    //Phases(),
-    //ToDoList(),
+    Profile(),
     ToDoTabController(),
-    //FeedbackScreen(),
-    //Design(),
     PointsTabController(),
-    //Center(child: Icon(Icons.lightbulb_outline)),
     Shop(),
+    FeedbackScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -69,10 +62,10 @@ class SabawaTabControllerState extends State<SabawaTabController> {
   Widget _buildContent() {
     if (appState.isLoading) {
       return LoadingIndicator();
-//    } else if (!appState.isLoading && appState.user == null) {
-//      return new LoginScreen();
-////    } else if (appState.newuser == true) {
-////      return new ProfileSetUp();
+    } else if (!appState.isLoading && appState.user == null) {
+      return new LoginScreen();
+//    } else if (appState.newuser == true) {
+//      return new ProfileSetUp();
     } else {
       return _buildBottomTabs();
 //      return _buildTabView(
@@ -198,6 +191,26 @@ class SabawaTabControllerState extends State<SabawaTabController> {
               width: 40.0,
             ),
             title: Text('SHOP',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: Colors.black,
+                fontSize: 13,
+                fontWeight: FontWeight.w900,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: _bottomNavBackGround,
+            icon: Image.asset(
+              "assets/nav/feedback_border.png",
+              width: 40.0,
+            ),
+            activeIcon: Image.asset(
+              "assets/nav/feedback.png",
+              width: 40.0,
+            ),
+            title: Text('FEEDBACK',
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 color: Colors.black,
