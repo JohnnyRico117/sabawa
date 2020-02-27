@@ -78,6 +78,70 @@ class Design extends StatelessWidget {
     );
   }
 
+  Widget _era() {
+    return ListView(
+      children: <Widget>[
+        _selectItem("60s", true),
+        _selectItem("70s", false),
+        _selectItem("80s", false)
+      ],
+    );
+  }
+
+  Widget _thisEra() {
+    return ListView(
+      children: <Widget>[
+        _designItem("To-Do List"),
+        _designItem("Points"),
+        _designItem("Profile"),
+        _designItem("Friends"),
+      ],
+    );
+  }
+
+  Widget _tv() {
+    return ListView(
+      children: <Widget>[
+        _designItem("TV"),
+        _designItem("Remote"),
+        _designItem("Achievements"),
+      ],
+    );
+  }
+
+  Widget _profile() {
+    return ListView(
+      children: <Widget>[
+        _designItem("Profile Name"),
+        _designItem("Friends Sign"),
+        _designItem("Design Sign"),
+        _designItem("Settings Sign"),
+      ],
+    );
+  }
+
+  Widget _thisSign() {
+    return ListView(
+      children: <Widget>[
+        _designItem("Color"),
+        _designItem("Font"),
+        _designItem("Icon"),
+      ],
+    );
+  }
+
+  Widget _friendListDesign() {
+    return ListView(
+      children: <Widget>[
+        _designItem("Background"),
+        _designItem("Font"),
+        _designItem("Fontcolor"),
+      ],
+    );
+  }
+
+
+
   Widget _designItem(String text) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 3.0, vertical: 2.0),

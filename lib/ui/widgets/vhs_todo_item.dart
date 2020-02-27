@@ -20,9 +20,12 @@ class VHSToDoItem extends StatefulWidget {
 class _VHSToDoItemState extends State<VHSToDoItem> {
   StateModel appState;
 
+  bool expired;
+
   @override
   void initState() {
     super.initState();
+    expired = false;
   }
 
   @override
@@ -42,6 +45,8 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
 
     final double endDate = widget.snap.data['enddate'].seconds / 3600;
     final double now = new Timestamp.now().seconds / 3600;
+
+    expired = now > endDate;
 
     final double hoursLeft = endDate - now;
     final double percent = 1.0 - hoursLeft / (hours * 100.0);
@@ -106,7 +111,9 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
                                                 padding:
                                                     EdgeInsets.only(left: 5.0),
                                                 child: Text(
-                                                  "+" + widget.snap.data['points'].toString(),
+                                                  "+" +
+                                                      widget.snap.data['points']
+                                                          .toString(),
                                                   style: TextStyle(
                                                     fontFamily: 'Montserrat',
                                                     color: Color(0xff432d2d),
@@ -134,7 +141,9 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
                                                 padding:
                                                     EdgeInsets.only(left: 5.0),
                                                 child: Text(
-                                                  "+" + widget.snap.data['points'].toString(),
+                                                  "+" +
+                                                      widget.snap.data['points']
+                                                          .toString(),
                                                   style: TextStyle(
                                                     fontFamily: 'Montserrat',
                                                     color: Color(0xff432d2d),
@@ -212,7 +221,9 @@ class _VHSToDoItemState extends State<VHSToDoItem> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontFamily: 'PermanentMarker',
-                                    color: Color(0xff432d2d),
+                                    color: expired
+                                        ? Colors.red
+                                        : Color(0xff432d2d),
                                     fontSize:
                                         task_length > 17 && task_length < 20
                                             ? 22

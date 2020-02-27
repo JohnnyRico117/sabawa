@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:sabawa/ui/screens/points.dart';
 import 'package:sabawa/ui/screens/achievements.dart';
@@ -31,6 +34,8 @@ class _ToDoTabControllerState extends State<ToDoTabController>
     with SingleTickerProviderStateMixin {
   StateModel appState;
 
+  FirebaseUser user;
+
   final List<Tab> myTabs = <Tab>[
     Tab(text: 'TODAY'),
     Tab(text: 'WEEK'),
@@ -39,10 +44,19 @@ class _ToDoTabControllerState extends State<ToDoTabController>
 
   TabController _tabController;
 
+  //DateTime date = new DateTime.now();
+  //DateTime lastMidnight;
+  List<DocumentSnapshot> expiredTasks;
+
   @override
   void initState() {
     super.initState();
+    //user = Provider.of<FirebaseUser>(context, listen: false);
+    //calculateIfDeadlineReached();
+
     _tabController = TabController(vsync: this, length: myTabs.length);
+    //lastMidnight = new DateTime(date.year, date.month, date.day);
+    expiredTasks = new List<DocumentSnapshot>();
   }
 
   @override
@@ -137,26 +151,6 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             Stack(
               children: <Widget>[
                 Positioned.fill(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: today(),
-                      ),
-                    ],
-                  )
-                ),
-                Positioned.fill(
-                  bottom: 0.0,
-                  child: Container(
-                    height: 100.0,
-                    child: rainbow(),
-                  ),
-                ),
-              ],
-            ),
-            Stack(
-              children: <Widget>[
-                Positioned.fill(
                   child: today(),
                 ),
                 Positioned.fill(
@@ -171,7 +165,21 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             Stack(
               children: <Widget>[
                 Positioned.fill(
-                  child: today(),
+                  child: week(),
+                ),
+                Positioned.fill(
+                  bottom: 0.0,
+                  child: Container(
+                    height: 100.0,
+                    child: rainbow(),
+                  ),
+                ),
+              ],
+            ),
+            Stack(
+              children: <Widget>[
+                Positioned.fill(
+                  child: all(),
                 ),
                 Positioned.fill(
                   bottom: 0.0,
@@ -202,11 +210,33 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddTask()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => AddTask()));
             print("TEST");
           }),
     );
   }
+
+//  Widget expired() {
+//        return Container(
+//          padding: EdgeInsets.only(top: 10.0),
+//          child: ListView(
+//            padding: EdgeInsets.only(bottom: 0.0),
+//            children: expiredTasks
+//                .map((document) {
+//              return VHSToDoItem(
+//                snap: document,
+//                updatePoints: (value) {
+//                  setState(() {
+//                    appState.currentUser.points += value;
+//                    appState.currentUser.coins += value;
+//                  });
+//                },
+//              );
+//            }).toList(),
+//          ),
+//        );
+//  }
 
   Widget today() {
     return new StreamBuilder(
@@ -214,9 +244,14 @@ class _ToDoTabControllerState extends State<ToDoTabController>
           .collection('tasks')
           //.where("project", isEqualTo: appState.currentProjectID)
           .where("owner", isEqualTo: appState.currentUser.id)
+          .orderBy("enddate", descending: false)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return LoadingIndicator();
+
+//        snapshot.data.documents.sort((a, b) => a['points']
+//                  .toString()
+//                  .compareTo(b['points'].toString()));
 
 //          switch (_sortBy) {
 //            case 'Alphabet':
@@ -245,7 +280,129 @@ class _ToDoTabControllerState extends State<ToDoTabController>
           child: ListView(
             padding: EdgeInsets.only(bottom: 100.0),
             children: snapshot.data.documents
-                .where((d) => d.data['status'] != 1  && calculateDaysUntilDeadline(d) == 0)
+                .where((d) =>
+                    d.data['status'] != 1 && calculateDaysUntilDeadline(d) <= 0)
+                .map((document) {
+              return VHSToDoItem(
+                snap: document,
+                updatePoints: (value) {
+                  setState(() {
+                    appState.currentUser.points += value;
+                    appState.currentUser.coins += value;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+        );
+
+//          if (_phaseFilter.isEmpty) {
+//            return new ListView(
+//              children: snapshot.data.documents.map((document) {
+//                Phase pha;
+//                Iterable<Phase> ps =
+//                _phases.where((p) => p.id == document.data['phase']);
+//                if (ps.isNotEmpty) {
+//                  pha = ps.first;
+//                }
+//                return ToDoItem(document, pha);
+//              }).toList(),
+//            );
+//          } else {
+//            return new ListView(
+//              children: snapshot.data.documents
+//                  .where((d) => _phaseFilter.contains(d.data['phase']))
+//                  .map((document) {
+//                Phase pha = _phases
+//                    .where((p) => p.id == document.data['phase'])
+//                    .first;
+//                return ToDoItem(document, pha);
+//              }).toList(),
+//            );
+//          }
+      },
+    );
+  }
+
+  Widget week() {
+    return new StreamBuilder(
+      stream: Firestore.instance
+          .collection('tasks')
+      //.where("project", isEqualTo: appState.currentProjectID)
+          .where("owner", isEqualTo: appState.currentUser.id)
+          .orderBy("enddate", descending: false)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return LoadingIndicator();
+
+        return Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: ListView(
+            padding: EdgeInsets.only(bottom: 100.0),
+            children: snapshot.data.documents
+                .where((d) =>
+            d.data['status'] != 1 && calculateDaysUntilDeadline(d) < 7)
+                .map((document) {
+              return VHSToDoItem(
+                snap: document,
+                updatePoints: (value) {
+                  setState(() {
+                    appState.currentUser.points += value;
+                    appState.currentUser.coins += value;
+                  });
+                },
+              );
+            }).toList(),
+          ),
+        );
+
+//          if (_phaseFilter.isEmpty) {
+//            return new ListView(
+//              children: snapshot.data.documents.map((document) {
+//                Phase pha;
+//                Iterable<Phase> ps =
+//                _phases.where((p) => p.id == document.data['phase']);
+//                if (ps.isNotEmpty) {
+//                  pha = ps.first;
+//                }
+//                return ToDoItem(document, pha);
+//              }).toList(),
+//            );
+//          } else {
+//            return new ListView(
+//              children: snapshot.data.documents
+//                  .where((d) => _phaseFilter.contains(d.data['phase']))
+//                  .map((document) {
+//                Phase pha = _phases
+//                    .where((p) => p.id == document.data['phase'])
+//                    .first;
+//                return ToDoItem(document, pha);
+//              }).toList(),
+//            );
+//          }
+      },
+    );
+  }
+
+  Widget all() {
+    return new StreamBuilder(
+      stream: Firestore.instance
+          .collection('tasks')
+      //.where("project", isEqualTo: appState.currentProjectID)
+          .where("owner", isEqualTo: appState.currentUser.id)
+          .orderBy("enddate", descending: false)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return LoadingIndicator();
+
+
+        return Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: ListView(
+            padding: EdgeInsets.only(bottom: 100.0),
+            children: snapshot.data.documents
+                .where((d) =>
+            d.data['status'] != 1)
                 .map((document) {
               return VHSToDoItem(
                 snap: document,
@@ -289,32 +446,40 @@ class _ToDoTabControllerState extends State<ToDoTabController>
   }
 
   int calculateDaysUntilDeadline(DocumentSnapshot snap) {
-
     DateTime date = new DateTime.now();
     DateTime lastMidnight = new DateTime(date.year, date.month, date.day);
-//    double now = new Timestamp.now().seconds / 3600;
-//    int hours;
-//    double endDate;
-//    double hoursLeft = 0.0;
-    //int _difference = 0;
 
     return DateTime.fromMillisecondsSinceEpoch(
-        snap.data["enddate"].seconds * 1000)
+            snap.data["enddate"].seconds * 1000)
         .difference(lastMidnight)
         .inDays;
+  }
+//
+//  void calculateIfDeadlineReached() {
+//    Firestore.instance
+//        .collection('tasks')
+//        .where("owner", isEqualTo: user.uid)
+//        .snapshots()
+//        .listen((snapshot) {
+//      snapshot.documents.forEach(checkIfExpired);
+//    });
+//  }
 
-    //print("DIffernece: " + _difference.toString());
+  void checkIfExpired(DocumentSnapshot snap) {
+    DateTime date = new DateTime.now();
+    DateTime lastMidnight = new DateTime(date.year, date.month, date.day);
 
-    //hours = snap.data['hours'];
-    //endDate = snap.data['enddate'].seconds / 3600;
-    //now = Timestamp.now().seconds / 3600;
+    List<DocumentSnapshot> tasks = new List();
 
-    //hoursLeft = endDate - now;
-//    if (hoursLeft >= 0) {
-//      percent = 1.0 - hoursLeft / (hours * 100.0);
-//    }
-
-
+    if (DateTime.fromMillisecondsSinceEpoch(snap.data["enddate"].seconds * 1000)
+            .difference(lastMidnight)
+            .inDays <
+        0) {
+      tasks.add(snap);
+      setState(() {
+        expiredTasks = tasks;
+      });
+    }
   }
 
   Widget rainbow() {
