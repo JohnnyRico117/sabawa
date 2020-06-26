@@ -24,3 +24,13 @@ Future<GoogleSignInAccount> getSignedInAccount(
   }
   return account;
 }
+
+Future<FirebaseUser> emailRegister(String email, String password) async {
+  final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+  email: 'an email',
+  password: 'a password',
+  )).user;
+
+  return user;
+}
+

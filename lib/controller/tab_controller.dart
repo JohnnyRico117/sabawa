@@ -16,6 +16,7 @@ import 'package:sabawa/ui/screens/profile.dart';
 //import 'package:sabawa/ui/screens/progress.dart';
 import 'package:sabawa/ui/shapes/rainbow_corner_full.dart';
 import 'package:sabawa/controller/todo_controller.dart';
+import 'package:sabawa/ui/screens/test_random.dart';
 import 'package:sabawa/ui/screens/design.dart';
 import 'package:sabawa/ui/screens/friend.dart';
 import 'package:sabawa/ui/screens/phases.dart';
@@ -40,6 +41,7 @@ class SabawaTabControllerState extends State<SabawaTabController> {
     PointsTabController(),
     Shop(),
     FeedbackScreen(),
+    //TestRandom()
   ];
 
   void _onItemTapped(int index) {

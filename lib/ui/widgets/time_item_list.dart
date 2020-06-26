@@ -73,81 +73,81 @@ class _TimeItemListState extends State<TimeItemList> {
           width: _items[index].selected ? 100.0 : 60.0,
           child: _items[index].selected
               ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 5.0),
-                          child: Text(
-                            // TODO: delete DUE
-                            _items[index].deadline ? "DUE" : formatDate(_items[index].date),
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: _items[index].deadline ? Colors.red : Colors.black
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5.0),
-                          child: _items[index].deadline ? Icon(Icons.info_outline, color: Colors.red,)
-                          : Text(
-                            formatDay(_items[index].date),
-                            style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                    CircularPercentIndicator(
-                      progressColor: Colors.green,
-                      radius: 40.0,
-                      percent: _percent,
-                      lineWidth: 5.0,
-                      center: Text(
-                        (_percent * 100).round().toString() + "%",
-                        style: TextStyle(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(
+                      // TODO: delete DUE
+                      _items[index].deadline ? "DUE" : formatDate(_items[index].date),
+                      style: TextStyle(
+                          fontSize: 14.0,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.0,
-                        ),
+                          color: _items[index].deadline ? Colors.red : Colors.black
                       ),
-                    )
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 5.0),
-                          child: Text(
-                            _items[index].deadline ? "DUE" : formatDate(_items[index].date),
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: _items[index].deadline ? Colors.black : Color(0xFF0050a1),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 5.0),
-                          child: _items[index].deadline ? Icon(Icons.info_outline, color: Colors.black,)
-                          : Text(
-                            formatDay(_items[index].date),
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Color(0xFF0050a1),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
-                  ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: _items[index].deadline ? Icon(Icons.info_outline, color: Colors.red,)
+                        : Text(
+                      formatDay(_items[index].date),
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              CircularPercentIndicator(
+                progressColor: Colors.green,
+                radius: 40.0,
+                percent: _percent,
+                lineWidth: 5.0,
+                center: Text(
+                  (_percent * 100).round().toString() + "%",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                  ),
                 ),
+              )
+            ],
+          )
+              : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Text(
+                      _items[index].deadline ? "DUE" : formatDate(_items[index].date),
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                        color: _items[index].deadline ? Colors.black : Color(0xFF0050a1),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child: _items[index].deadline ? Icon(Icons.info_outline, color: Colors.black,)
+                        : Text(
+                      formatDay(_items[index].date),
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color(0xFF0050a1),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       onTap: () {

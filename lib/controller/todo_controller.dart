@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -48,10 +49,12 @@ class _ToDoTabControllerState extends State<ToDoTabController>
   //DateTime lastMidnight;
   List<DocumentSnapshot> expiredTasks;
 
+  List<DocumentSnapshot> randomTask;
+
   @override
   void initState() {
     super.initState();
-    //user = Provider.of<FirebaseUser>(context, listen: false);
+    user = Provider.of<FirebaseUser>(context, listen: false);
     //calculateIfDeadlineReached();
 
     _tabController = TabController(vsync: this, length: myTabs.length);
@@ -179,7 +182,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             Stack(
               children: <Widget>[
                 Positioned.fill(
-                  child: all(),
+                  child: today(),
                 ),
                 Positioned.fill(
                   bottom: 0.0,
@@ -217,6 +220,68 @@ class _ToDoTabControllerState extends State<ToDoTabController>
     );
   }
 
+//  Widget randomVHS() {
+//    Firestore.instance
+//        .collection('tasks')
+//        .where("owner", isEqualTo: user.uid)
+//        .snapshots()
+//        .listen((snapshot) {
+//      snapshot.documents.forEach(putIntoList);
+//    });
+//
+//    return Center(
+//      child: Text("ZUFALL"),
+//    );
+//  }
+
+  void putIntoList(DocumentSnapshot snap) {
+    setState(() {
+      randomTask.add(snap);
+    });
+
+
+  }
+
+  List _elements = [
+    {'name': 'John', 'group': 'Team A'},
+    {'name': 'Will', 'group': 'Team B'},
+    {'name': 'Beth', 'group': 'Team A'},
+    {'name': 'Miranda', 'group': 'Team B'},
+    {'name': 'Mike', 'group': 'Team C'},
+    {'name': 'Danny', 'group': 'Team C'},
+  ];
+
+  Widget testList() {
+    return GroupedListView<dynamic, String>(
+      groupBy: (element) => element['group'],
+      elements: _elements,
+      sort: true,
+      groupSeparatorBuilder: (String value) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+            child: Text(
+          value,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        )),
+      ),
+      itemBuilder: (c, element) {
+        return Card(
+          elevation: 8.0,
+          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          child: Container(
+            child: ListTile(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              leading: Icon(Icons.account_circle),
+              title: Text(element['name']),
+              trailing: Icon(Icons.arrow_forward),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 //  Widget expired() {
 //        return Container(
 //          padding: EdgeInsets.only(top: 10.0),
@@ -237,6 +302,71 @@ class _ToDoTabControllerState extends State<ToDoTabController>
 //          ),
 //        );
 //  }
+
+  Widget testToday() {
+    return new StreamBuilder(
+      stream: Firestore.instance
+          .collection('tasks')
+          //.where("project", isEqualTo: appState.currentProjectID)
+          .where("owner", isEqualTo: appState.currentUser.id)
+          .orderBy("enddate", descending: false)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return LoadingIndicator();
+
+        return Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: GroupedListView<dynamic, String>(
+            groupBy: (element) => element.data['status'].toString(),
+            elements: snapshot.data.documents,
+            sort: true,
+            groupSeparatorBuilder: (String value) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: Text(
+                value,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
+            ),
+            itemBuilder: (c, element) {
+              return Card(
+                elevation: 8.0,
+                margin:
+                    new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                child: Container(
+                  child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    leading: Icon(Icons.account_circle),
+                    title: Text(element.data['task']),
+                    trailing: Icon(Icons.arrow_forward),
+                  ),
+                ),
+              );
+            },
+          ),
+
+//          child: ListView(
+//            padding: EdgeInsets.only(bottom: 100.0),
+//            children: snapshot.data.documents
+//                .where((d) =>
+//            d.data['status'] != 1 && calculateDaysUntilDeadline(d) <= 0)
+//                .map((document) {
+//              return VHSToDoItem(
+//                snap: document,
+//                updatePoints: (value) {
+//                  setState(() {
+//                    appState.currentUser.points += value;
+//                    appState.currentUser.coins += value;
+//                  });
+//                },
+//              );
+//            }).toList(),
+//          ),
+        );
+      },
+    );
+  }
 
   Widget today() {
     return new StreamBuilder(
@@ -328,7 +458,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
     return new StreamBuilder(
       stream: Firestore.instance
           .collection('tasks')
-      //.where("project", isEqualTo: appState.currentProjectID)
+          //.where("project", isEqualTo: appState.currentProjectID)
           .where("owner", isEqualTo: appState.currentUser.id)
           .orderBy("enddate", descending: false)
           .snapshots(),
@@ -341,7 +471,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
             padding: EdgeInsets.only(bottom: 100.0),
             children: snapshot.data.documents
                 .where((d) =>
-            d.data['status'] != 1 && calculateDaysUntilDeadline(d) < 7)
+                    d.data['status'] != 1 && calculateDaysUntilDeadline(d) < 7)
                 .map((document) {
               return VHSToDoItem(
                 snap: document,
@@ -388,21 +518,19 @@ class _ToDoTabControllerState extends State<ToDoTabController>
     return new StreamBuilder(
       stream: Firestore.instance
           .collection('tasks')
-      //.where("project", isEqualTo: appState.currentProjectID)
+          //.where("project", isEqualTo: appState.currentProjectID)
           .where("owner", isEqualTo: appState.currentUser.id)
           .orderBy("enddate", descending: false)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return LoadingIndicator();
 
-
         return Container(
           padding: EdgeInsets.only(top: 10.0),
           child: ListView(
             padding: EdgeInsets.only(bottom: 100.0),
             children: snapshot.data.documents
-                .where((d) =>
-            d.data['status'] != 1)
+                .where((d) => d.data['status'] != 1)
                 .map((document) {
               return VHSToDoItem(
                 snap: document,
@@ -454,6 +582,7 @@ class _ToDoTabControllerState extends State<ToDoTabController>
         .difference(lastMidnight)
         .inDays;
   }
+
 //
 //  void calculateIfDeadlineReached() {
 //    Firestore.instance
@@ -481,6 +610,8 @@ class _ToDoTabControllerState extends State<ToDoTabController>
       });
     }
   }
+
+  //void writeTasksIntoList
 
   Widget rainbow() {
     return Stack(
